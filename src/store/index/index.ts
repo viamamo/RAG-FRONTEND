@@ -1,9 +1,8 @@
 import {defineStore} from "pinia";
 import {nanoid} from "nanoid";
-import {FormInstance} from "element-plus";
 
 
-export const useMetaTableStore=defineStore('metaTable',{
+export const useMetaTableStore=defineStore('metaTableId',{
   state:()=>{
     return{
       metaTableId:{
@@ -14,8 +13,6 @@ export const useMetaTableStore=defineStore('metaTable',{
         mockNum: 0,
         metaFieldList: []
       } as MetaTableId,
-      metaTableFormRef: {} as FormInstance,
-      metaFieldListFormRef:{} as FormInstance
     }
   }
 })
@@ -51,7 +48,7 @@ export const useAddDialogVisibleStore = defineStore('addDialogVisible',{
   }
 })
 
-export const useUserInformationStore = defineStore('addDialogVisible',{
+export const useUserInformationStore = defineStore('userInformation',{
   state:()=>{
     return {
       logged:false,
@@ -62,6 +59,14 @@ export const useUserInformationStore = defineStore('addDialogVisible',{
       userPassword:"",
       createTime:{},
       updateTime:{},
+    }
+  }
+})
+
+export const useGeneratedResultsStore = defineStore('generatedResults',{
+  state:()=>{
+    return {
+      generationVO:{} as GenerationVO
     }
   }
 })

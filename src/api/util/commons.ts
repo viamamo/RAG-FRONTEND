@@ -1,4 +1,6 @@
 import {nanoid} from "nanoid";
+import {useClipboard} from "@vueuse/core";
+import {ElMessage} from "element-plus";
 
 export async function requestGet(url: string, params:[string,any][]): Promise<GenericResponse<any>> {
   let mark=true;
@@ -52,7 +54,7 @@ export function dateFormat(date:Date):string{
 
 export function dateStringFormat(dateString:string):string{
   let date=new Date(dateString)
-  return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`
+  return dateFormat(date)
 }
 
 export function MetaTable2MetaTableId(metaTable:MetaTable):MetaTableId{
@@ -107,4 +109,20 @@ export function MetaFieldId2MetaField(metaFieldId:MetaFieldId):MetaField{
     mockType: metaFieldId.mockType,
     mockParams: metaFieldId.mockParams
   }
+}
+
+export function copy2ClipBoard(value:string):void{
+  const { copy, isSupported } = useClipboard();
+  if (!isSupported) {
+    ElMessage.info({
+      message:`您的浏览器不支持Clipboard API，请手动复制：\n${value}`,
+      showClose:true,
+      duration:0
+    })
+    return;
+  }
+  copy(value).then((data)=>{
+    console.log(data)
+  });
+  ElMessage.success("已复制到剪切板")
 }

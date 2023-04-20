@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    v-model="visibleStore.tableImportDrawerVisible"
+    v-model="importDialogVisible.tableImportDrawerVisible"
     direction="rtl">
     <MyTable style="height: 90%;"/>
   </el-drawer>
@@ -10,7 +10,7 @@
 import {useImportDialogVisibleStore} from "../../store/index";
 import MyTable from "../table/MyTable.vue";
 
-const visibleStore=useImportDialogVisibleStore()
+const importDialogVisible=useImportDialogVisibleStore()
 
 </script>
 

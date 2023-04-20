@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="addDialogVisibleStore.addFieldDialogVisible" width="600">
+  <el-dialog v-model="addDialogVisible.addFieldDialogVisible" width="600">
     <template #header>
       <h2 class="dialog-header">
         创建字段
@@ -17,7 +17,7 @@
           <el-space wrap style="padding-top: 10px">
             <el-form-item label="字段类型">
               <el-select v-model="metaField.fieldType">
-                <el-option v-for="[key,value] in Object.entries(FIELD_TYPES)" :label="value" :value="key"/>
+                <el-option v-for="[key,value] in Object.entries(FIELD_TYPES)" :label="key" :value="value"/>
               </el-select>
             </el-form-item>
             <el-form-item label="默认值">
@@ -83,7 +83,7 @@ const emits=defineEmits<{
   (e:'refresh'):void
 }>()
 
-let addDialogVisibleStore=useAddDialogVisibleStore()
+let addDialogVisible=useAddDialogVisibleStore()
 
 
 let inputContent=reactive({
@@ -94,7 +94,7 @@ let inputContent=reactive({
 let metaField=reactive({} as MetaField)
 
 function clearDialog(){
-  addDialogVisibleStore.addFieldDialogVisible=false
+  addDialogVisible.addFieldDialogVisible=false
   inputContent.name=''
   inputContent.fieldName=''
   inputContent.content=''

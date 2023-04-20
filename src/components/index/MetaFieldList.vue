@@ -22,7 +22,7 @@
           </el-form-item>
           <el-form-item label="字段类型" prop="fieldType" :rules="rules.fieldType">
             <el-select v-model="metaField.fieldType">
-              <el-option v-for="[key,value] in Object.entries(FIELD_TYPES)" :label="value" :value="key"/>
+              <el-option v-for="[key,value] in Object.entries(FIELD_TYPES)" :label="key" :value="value"/>
             </el-select>
           </el-form-item>
           <el-form-item label="默认值" prop="defaultValue">
@@ -132,7 +132,6 @@ function deleteField(id: string) {
   })
   metaTableId.metaFieldList.splice(index, 1)
 }
-
 </script>
 
 <style scoped>

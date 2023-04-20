@@ -7,7 +7,7 @@
       <el-button icon="Plus" @click="addEmptyMetaField">
         新增字段
       </el-button>
-      <el-button icon="Plus" @click="dialogVisible.fieldImportDrawerVisible=true">
+      <el-button icon="Plus" @click="importDialogVisible.fieldImportDrawerVisible=true">
         导入字段
       </el-button>
       <el-button icon="Plus" @click="addGenericMetaField">
@@ -24,7 +24,7 @@ import {useImportDialogVisibleStore, useMetaTableStore} from "../../store/index"
 
 let metaTableId=useMetaTableStore().metaTableId
 
-let dialogVisible=useImportDialogVisibleStore()
+let importDialogVisible=useImportDialogVisibleStore()
 
 function addEmptyMetaField() {
   metaTableId.metaFieldList.push({
@@ -51,8 +51,8 @@ let genericMetaFieldList=[
   {
     id:nanoid(),
     fieldName: "id",
-    fieldType: "BIGINT",
-    defaultValue: "0",
+    fieldType: "bigint",
+    defaultValue: "",
     notNull: true,
     comment: "主键",
     primaryKey: true,
@@ -63,7 +63,7 @@ let genericMetaFieldList=[
   {
     id:nanoid(),
     fieldName: "create_time",
-    fieldType: "DATETIME",
+    fieldType: "datetime",
     defaultValue: "CURRENT_TIMESTAMP",
     notNull: true,
     comment: "创建时间",
@@ -72,9 +72,10 @@ let genericMetaFieldList=[
     mockType: "NONE",
     mockParams: "",
   },
-  {id:nanoid(),
+  {
+    id:nanoid(),
     fieldName: "update_time",
-    fieldType: "DATETIME",
+    fieldType: "datetime",
     defaultValue: "CURRENT_TIMESTAMP",
     notNull: true,
     comment: "更新时间",
@@ -83,9 +84,10 @@ let genericMetaFieldList=[
     mockType: "NONE",
     mockParams: "",
   },
-  {id:nanoid(),
+  {
+    id:nanoid(),
     fieldName: "is_deleted",
-    fieldType: "TINYINT",
+    fieldType: "tinyint",
     defaultValue: "0",
     notNull: false,
     comment: "删除标记",

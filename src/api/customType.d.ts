@@ -96,7 +96,7 @@ class TableVO extends MetaTableId {
 class GenerationVO {
   metaTable: MetaTable;
   createSql: string;
-  dataList: Array<Object>;
+  dataList: object[];
   insertSql: string;
   dataJson: string;
   javaEntityCode: string;

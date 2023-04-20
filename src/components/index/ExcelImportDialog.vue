@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-model="visibleStore.excelImportDialogVisible"
+    v-model="importDialogVisible.excelImportDialogVisible"
     width="30%"
     close-on-click-modal
     draggable
@@ -45,7 +45,7 @@ import {UploadFilled} from "@element-plus/icons-vue";
 import {genFileId} from "element-plus/es/components/upload/src/upload"
 import {nanoid} from "nanoid";
 
-const visibleStore = useImportDialogVisibleStore()
+const importDialogVisible = useImportDialogVisibleStore()
 
 const upload = ref<UploadInstance>()
 
@@ -59,7 +59,7 @@ function handleExceed(files: any) {
 }
 
 function closeDialog() {
-  visibleStore.excelImportDialogVisible = false
+  importDialogVisible.excelImportDialogVisible = false
 }
 
 function submitUpload() {

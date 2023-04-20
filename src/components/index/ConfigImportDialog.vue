@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-model="visibleStore.configImportDialogVisible"
+    v-model="importDialogVisible.configImportDialogVisible"
     width="30%"
     close-on-click-modal
     draggable
@@ -20,7 +20,7 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visibleStore.configImportDialogVisible = false">取消</el-button>
+        <el-button @click="importDialogVisible.configImportDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="configImport">
           确认
         </el-button>
@@ -35,7 +35,7 @@ import {ref} from "vue";
 import {MetaTable2MetaTableId} from "../../api/util/commons";
 import {ElMessage} from "element-plus";
 
-const visibleStore = useImportDialogVisibleStore()
+const importDialogVisible = useImportDialogVisibleStore()
 
 let inputContent = ref("")
 
@@ -45,7 +45,7 @@ function importExample() {
 
 function configImport() {
   try {
-    visibleStore.configImportDialogVisible = false
+    importDialogVisible.configImportDialogVisible = false
     let metaTable = JSON.parse(inputContent.value) as MetaTable
     useMetaTableStore().$patch({metaTableId: MetaTable2MetaTableId(metaTable)})
     ElMessage.success("导入成功")

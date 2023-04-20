@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-model="visibleStore.sqlImportDialogVisible"
+    v-model="importDialogVisible.sqlImportDialogVisible"
     width="30%"
     close-on-click-modal
     draggable
@@ -20,7 +20,7 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visibleStore.sqlImportDialogVisible = false">取消</el-button>
+        <el-button @click="importDialogVisible.sqlImportDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="sqlImport">
           确认
         </el-button>
@@ -35,7 +35,7 @@ import {ref} from "vue";
 import {MetaTable2MetaTableId, requestPost} from "../../api/util/commons";
 import {ElMessage} from "element-plus";
 
-const visibleStore=useImportDialogVisibleStore()
+const importDialogVisible=useImportDialogVisibleStore()
 
 let inputContent=ref("")
 function importExample(){
@@ -44,7 +44,7 @@ function importExample(){
 }
 
 function sqlImport(){
-  visibleStore.sqlImportDialogVisible = false
+  importDialogVisible.sqlImportDialogVisible = false
   requestPost('/sql/get/schema/sql',{
     content:inputContent.value
   }).then((data)=>{

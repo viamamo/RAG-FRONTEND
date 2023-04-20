@@ -40,18 +40,15 @@ import TableImportDrawer from "../../components/index/TableImportDrawer.vue";
 import ConfigImportDialog from "../../components/index/ConfigImportDialog.vue";
 import SqlImportDialect from "../../components/index/SqlImportDialect.vue";
 import ExcelImportDialog from "../../components/index/ExcelImportDialog.vue";
-import {useMetaTableStore} from "../../store/index";
+import {useGeneratedResultsStore, useMetaTableStore} from "../../store/index";
 import FieldImportDrawer from "../../components/index/FieldImportDrawer.vue";
 import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {MetaFieldId2MetaField, MetaTableId2MetaTable, requestPost} from "../../api/util/commons";
 import {useClipboard} from "@vueuse/core";
 
-const emits=defineEmits<{
-  (e:'generated',generationVo:GenerationVO):void
-}>()
-
 let metaTableId: MetaTableId = useMetaTableStore().metaTableId
+let generatedResults=useGeneratedResultsStore()
 let metaTableDisplay=ref()
 let metaFieldDisplay=ref()
 async function saveTable(){
@@ -145,7 +142,7 @@ function generate(){
               ElMessage.error(`生成失败：${data.message}`)
             }
             else{
-              emits('generated',data.data as GenerationVO)
+              generatedResults.$patch({generationVO: data.data as GenerationVO})
             }
           })
         }

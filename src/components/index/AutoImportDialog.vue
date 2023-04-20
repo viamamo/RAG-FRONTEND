@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-model="visibleStore.autoImportDialogVisible"
+    v-model="importDialogVisible.autoImportDialogVisible"
     width="30%"
     close-on-click-modal
     draggable
@@ -20,7 +20,7 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="visibleStore.autoImportDialogVisible = false">取消</el-button>
+        <el-button @click="importDialogVisible.autoImportDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="autoImport">
           确认
         </el-button>
@@ -35,7 +35,7 @@ import {ref} from "vue";
 import {MetaTable2MetaTableId, requestPost} from "../../api/util/commons";
 import {ElMessage} from "element-plus";
 
-const visibleStore=useImportDialogVisibleStore()
+const importDialogVisible=useImportDialogVisibleStore()
 
 let inputContent=ref("")
 
@@ -44,7 +44,7 @@ function importExample(){
 }
 
 function autoImport(){
-  visibleStore.autoImportDialogVisible = false;
+  importDialogVisible.autoImportDialogVisible = false;
   requestPost('/sql/get/schema/auto',{
     content:inputContent.value
   }).then((data)=>{

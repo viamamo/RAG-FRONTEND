@@ -1,19 +1,19 @@
 <template>
   <el-form ref="formRef" :model="metaTableId" label-width="auto">
     <el-form-item>
-      <el-button @click="dialogVisible.autoImportDialogVisible=true">
+      <el-button @click="importDialogVisible.autoImportDialogVisible=true">
         自动导入
       </el-button>
-      <el-button @click="dialogVisible.tableImportDrawerVisible=true">
+      <el-button @click="importDialogVisible.tableImportDrawerVisible=true">
         表导入
       </el-button>
-      <el-button @click="dialogVisible.configImportDialogVisible=true">
+      <el-button @click="importDialogVisible.configImportDialogVisible=true">
         配置导入
       </el-button>
-      <el-button @click="dialogVisible.sqlImportDialogVisible=true">
+      <el-button @click="importDialogVisible.sqlImportDialogVisible=true">
         SQL导入
       </el-button>
-      <el-button @click="dialogVisible.excelImportDialogVisible=true">
+      <el-button @click="importDialogVisible.excelImportDialogVisible=true">
         Excel导入
       </el-button>
     </el-form-item>
@@ -50,7 +50,7 @@ const rules = reactive({
 
 let metaTableId=useMetaTableStore().metaTableId
 
-const dialogVisible = useImportDialogVisibleStore()
+const importDialogVisible = useImportDialogVisibleStore()
 
 const validTable=async ()=>{
   let result

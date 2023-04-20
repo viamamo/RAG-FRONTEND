@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="addDialogVisibleStore.addDictDialogVisible" width="600">
+  <el-dialog v-model="addDialogVisible.addDictDialogVisible" width="600">
     <template #header>
       <h2 class="dialog-header">
         创建词库
@@ -34,7 +34,7 @@ const emits=defineEmits<{
   (e:'refresh'):void
 }>()
 
-let addDialogVisibleStore=useAddDialogVisibleStore()
+let addDialogVisible=useAddDialogVisibleStore()
 
 
 let inputContent=reactive({
@@ -43,7 +43,7 @@ let inputContent=reactive({
 })
 
 function clearDialog(){
-  addDialogVisibleStore.addDictDialogVisible=false
+  addDialogVisible.addDictDialogVisible=false
   inputContent.name=''
   inputContent.content=''
 }

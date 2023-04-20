@@ -10,10 +10,6 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 
 import 'default-passive-events'
 
-import Schema from 'async-validator';
-
-Schema.warning = function(){};
-
 const pinia = createPinia()
 
 const app = createApp(App)
