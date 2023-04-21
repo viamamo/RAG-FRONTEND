@@ -46,8 +46,6 @@ let inputContent=ref({
 
 onMounted(()=>{
   console.log("choose")
-  let params: GenericGetRequest = {
-  }
   requestGet('/db_info/list',[]).then((data) => {
     if (data.code === 20000) {
       dbInfoList=data.data
