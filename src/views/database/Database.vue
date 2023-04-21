@@ -1,18 +1,20 @@
 <template>
   <el-row justify="space-around">
     <el-col :span="11">
-      <IndexInputCard/>
+      <DataBaseCard url="/db_info/list/page"/>
     </el-col>
     <el-col :span="11">
-      <IndexResultCard/>
+      <JobCard/>
     </el-col>
   </el-row>
 </template>
 
 <script setup lang="ts">
-import IndexInputCard from "../../components/index/IndexInputCard.vue";
-import IndexResultCard from "../../components/index/IndexResultCard.vue";
+
+import DataBaseCard from "../../components/database/DatabaseCard.vue";
+import JobCard from "../../components/database/JobCard.vue";
 </script>
 
 <style scoped>
+
 </style>

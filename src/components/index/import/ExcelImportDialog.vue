@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import {useImportDialogVisibleStore} from "../../store/index";
+import {useImportDialogVisibleStore} from "../../../store/index";
 import {ref} from "vue";
 import type {UploadInstance, UploadRawFile} from 'element-plus'
 import {ElMessage} from "element-plus";

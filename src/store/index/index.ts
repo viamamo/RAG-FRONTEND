@@ -43,7 +43,8 @@ export const useAddDialogVisibleStore = defineStore('addDialogVisible',{
     return {
       addDictDialogVisible:false,
       addFieldDialogVisible:false,
-      addTableDialogVisible:false
+      addTableDialogVisible:false,
+      addDatabaseDialogVisible:false
     }
   }
 })
@@ -67,6 +68,15 @@ export const useGeneratedResultsStore = defineStore('generatedResults',{
   state:()=>{
     return {
       generationVO:{} as GenerationVO
+    }
+  }
+})
+
+export const useExecuteDialogVisibleStore = defineStore('executeDialogVisible',{
+  state:()=>{
+    return{
+      executeSqlDialogVisible:false,
+      chooseDbDialogVisible:false
     }
   }
 })

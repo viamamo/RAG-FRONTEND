@@ -1,4 +1,4 @@
-export const DEFAULT_USER_ROLE:string="user"
+export const DEFAULT_USER_ROLE: string = "user"
 
 export const FIELD_TYPES = {
   TINYINT: "tinyint",
@@ -56,6 +56,38 @@ export const RANDOM_TYPES = {
   TIMESTAMP: "时间戳",
   PHONE: "手机号"
 }
+
+export const DATABASE_TYPES:{
+  name:string,
+  value:string,
+  defaultPort:number
+}[] = [
+  {
+    name: "MySql",
+    value: "MYSQL",
+    defaultPort: 3306,
+  },
+  {
+    name: "PostgreSQL",
+    value: "POSTGRES",
+    defaultPort: 5432,
+  },
+  {
+    name: "Oracle",
+    value: "ORACLE",
+    defaultPort: 1521,
+  },
+  {
+    name: "SQLServer",
+    value: "SQLSERVER",
+    defaultPort: 1433
+  },
+  {
+    name: "Sybase",
+    value: "SYBASE",
+    defaultPort: 2638
+  }
+]
 
 export enum metaFieldNames {
   fieldName = "字段名",

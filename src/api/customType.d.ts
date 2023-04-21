@@ -103,3 +103,20 @@ class GenerationVO {
   javaObjectCode: string;
   typescriptTypeCode: string;
 }
+
+class DbInfo {
+  id: number;
+  name: string;
+  dbName:string;
+  dbType:string;
+  driver:string;
+  url:string;
+  username:string;
+  password:string;
+  property:string;
+  host:string;
+  port:number;
+  userId: number;
+  createTime: Date;
+  updateTime: Date;
+}

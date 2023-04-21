@@ -57,7 +57,7 @@ let genericMetaFieldList=[
     comment: "主键",
     primaryKey: true,
     autoIncrement: true,
-    mockType: "INCREASE",
+    mockType: "NONE",
     mockParams: "0",
   },
   {

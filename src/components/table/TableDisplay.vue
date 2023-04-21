@@ -69,7 +69,7 @@ const emits=defineEmits<{
 const search = ref('')
 let current = ref(1)
 let total = ref(0)
-let tableInfoList: TableVO[] = reactive([])
+let tableInfoList=ref<TableVO[]>()
 let visible = ref(true)
 let resultTips = reactive({
   icon: '',
@@ -87,7 +87,7 @@ onMounted(() => {
   requestTableData<TableInfo>(props.url, params).then((data) => {
     if (data.code === 20000) {
       total.value = data.data.total
-      tableInfoList=data.data.records.map((value: TableInfo) => {
+      tableInfoList.value=data.data.records.map((value: TableInfo) => {
         let metaTable=JSON.parse(value.content) as TableVO
         metaTable.id=value.id.toString()
         metaTable.updateTime=value.updateTime
@@ -107,7 +107,10 @@ onMounted(() => {
   })
 })
 
-const refreshPage = () => {
+const refreshPage=(value?:number)=> {
+  if(value){
+    current.value=value
+  }
   let params: GenericGetRequest = {
     sortOrder: "ASC",
     sortColumn: "id",
@@ -118,7 +121,7 @@ const refreshPage = () => {
   requestTableData<TableInfo>(props.url, params).then((data) => {
     if (data.code === 20000) {
       total.value = data.data.total
-      tableInfoList=data.data.records.map((value: TableInfo) => {
+      tableInfoList.value=data.data.records.map((value: TableInfo) => {
         return JSON.parse(value.content) as TableVO
       })
     } else {

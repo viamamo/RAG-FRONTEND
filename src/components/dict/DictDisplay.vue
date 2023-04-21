@@ -52,7 +52,7 @@ const emits=defineEmits<{
 const search = ref('')
 let current = ref(1)
 let total = ref(0)
-let dictInfoList: DictInfo[] = reactive([])
+let dictInfoList=ref<DictInfo[]>()
 let visible = ref(true)
 let resultTips = reactive({
   icon: '',
@@ -70,7 +70,7 @@ onMounted(() => {
     if (data.code === 20000) {
       visible.value = true
       total.value = data.data.total
-      dictInfoList = data.data.records
+      dictInfoList.value = data.data.records
     } else if (data.code === 40100) {
       visible.value = false
       resultTips.icon = 'warning'
@@ -85,7 +85,10 @@ onMounted(() => {
   })
 })
 
-const refreshPage = () => {
+const refreshPage=(value?:number)=> {
+  if(value){
+    current.value=value
+  }
   let params: GenericGetRequest = {
     sortOrder: "ASC",
     sortColumn: "id",
@@ -97,7 +100,7 @@ const refreshPage = () => {
     if (data.code === 20000) {
       visible.value = true
       total.value = data.data.total
-      dictInfoList = data.data.records
+      dictInfoList.value = data.data.records
     } else if (data.code === 40100) {
       visible.value = false
       resultTips.icon = 'warning'

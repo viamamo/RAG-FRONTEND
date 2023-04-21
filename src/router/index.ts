@@ -3,6 +3,7 @@ import Index from "../views/index/Index.vue";
 import Dict from "../views/dict/Dict.vue";
 import Field from "../views/field/Field.vue";
 import Table from "../views/table/Table.vue";
+import DataBase from "../views/database/Database.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -28,6 +29,11 @@ export const routes: Array<RouteRecordRaw> = [
     path:'/table',
     name:'table',
     component:Table
+  },
+  {
+    path:'/database',
+    name:'database',
+    component:DataBase
   }
 ]
 const router = createRouter({

@@ -66,6 +66,11 @@ let menuItems: RouterItem[] = [
     path: 'table',
     name: '表',
     children: []
+  },
+  {
+    path: 'database',
+    name: '数据库/作业',
+    children: []
   }
 ]
 let activeMenuItem = ref("index");

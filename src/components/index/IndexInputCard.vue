@@ -33,15 +33,15 @@
 </template>
 
 <script setup lang="ts">
-import MetaTableDisplay from "../../components/index/MetaTableDisplay.vue";
-import MetaFieldDisplay from "../../components/index/MetaFieldDisplay.vue";
-import AutoImportDialog from "../../components/index/AutoImportDialog.vue";
-import TableImportDrawer from "../../components/index/TableImportDrawer.vue";
-import ConfigImportDialog from "../../components/index/ConfigImportDialog.vue";
-import SqlImportDialect from "../../components/index/SqlImportDialect.vue";
-import ExcelImportDialog from "../../components/index/ExcelImportDialog.vue";
+import MetaTableDisplay from "./MetaTableDisplay.vue";
+import MetaFieldDisplay from "./MetaFieldDisplay.vue";
+import AutoImportDialog from "./import/AutoImportDialog.vue";
+import TableImportDrawer from "./import/TableImportDrawer.vue";
+import ConfigImportDialog from "./import/ConfigImportDialog.vue";
+import SqlImportDialect from "./import/SqlImportDialect.vue";
+import ExcelImportDialog from "./import/ExcelImportDialog.vue";
 import {useGeneratedResultsStore, useMetaTableStore} from "../../store/index";
-import FieldImportDrawer from "../../components/index/FieldImportDrawer.vue";
+import FieldImportDrawer from "./FieldImportDrawer.vue";
 import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {MetaFieldId2MetaField, MetaTableId2MetaTable, requestPost} from "../../api/util/commons";

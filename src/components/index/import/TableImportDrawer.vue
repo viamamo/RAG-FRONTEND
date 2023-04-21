@@ -7,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import {useImportDialogVisibleStore} from "../../store/index";
-import MyTable from "../table/MyTable.vue";
+import {useImportDialogVisibleStore} from "../../../store/index";
+import MyTable from "../../table/MyTable.vue";
 
 const importDialogVisible=useImportDialogVisibleStore()
 

@@ -91,7 +91,7 @@ const metaTableId=useMetaTableStore().metaTableId
 const search = ref('')
 let current = ref(1)
 let total = ref(0)
-let fieldInfoList: FieldVO[] = reactive([])
+let fieldInfoList=ref<FieldVO[]>()
 let visible = ref(true)
 let resultTips = reactive({
   icon: '',
@@ -110,7 +110,7 @@ onMounted(() => {
     if (data.code === 20000) {
       visible.value = true
       total.value = data.data.total
-      fieldInfoList = data.data.records.map((value: FieldInfo) => {
+      fieldInfoList.value = data.data.records.map((value: FieldInfo) => {
         let metaField=JSON.parse(value.content) as FieldVO
         metaField.id=value.id.toString()
         metaField.name=value.name
@@ -134,7 +134,10 @@ onMounted(() => {
   })
 })
 
-const refreshPage = () => {
+const refreshPage=(value?:number)=> {
+  if(value){
+    current.value=value
+  }
   let params: GenericGetRequest = {
     sortOrder: "ASC",
     sortColumn: "id",
@@ -146,7 +149,7 @@ const refreshPage = () => {
     if (data.code === 20000) {
       visible.value = true
       total.value = data.data.total
-      fieldInfoList = data.data.records.map((value: FieldInfo) => {
+      fieldInfoList.value = data.data.records.map((value: FieldInfo) => {
         let metaField=JSON.parse(value.content) as FieldVO
         metaField.id=value.id.toString()
         metaField.name=value.name
