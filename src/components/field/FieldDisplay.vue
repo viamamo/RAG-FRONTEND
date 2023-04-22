@@ -7,8 +7,8 @@
       <el-table :data="fieldInfoList" style="width: 100%;padding-top:10px;padding-bottom: 15px" :show-header="false">
         <el-table-column>
           <template #default="scope">
-            <el-space direction="vertical" alignment="stretch">
-              <el-descriptions :title="scope.row.name" :column="3" border>
+            <el-space direction="vertical" alignment="stretch" style="width: 90%;">
+              <el-descriptions :title="scope.row.name" :column="3" border style="width: 90%;">
                 <template #title>
                   <el-text size="large">{{ scope.row.name }}</el-text>
                 </template>
@@ -61,11 +61,7 @@
       </div>
     </div>
     <div v-else>
-      <el-result :icon="resultTips.icon" :title="resultTips.title" :sub-title="resultTips.subTitle">
-        <template #extra>
-          <el-button type="primary">Back</el-button>
-        </template>
-      </el-result>
+      <el-result :icon="resultTips.icon" :title="resultTips.title" :sub-title="resultTips.subTitle"/>
     </div>
   </div>
 </template>
@@ -98,45 +94,9 @@ let resultTips = reactive({
   title: '',
   subTitle: '',
 })
-
-onMounted(() => {
-  let params: GenericGetRequest = {
-    sortOrder: "ASC",
-    sortColumn: "id",
-    paginationNum: 1,
-    paginationSize: 10
-  }
-  requestTableData<FieldInfo>(props.url, params).then((data) => {
-    if (data.code === 20000) {
-      visible.value = true
-      total.value = data.data.total
-      fieldInfoList.value = data.data.records.map((value: FieldInfo) => {
-        let metaField=JSON.parse(value.content) as FieldVO
-        metaField.id=value.id.toString()
-        metaField.name=value.name
-        metaField.notNull=metaField.notNull==="true"?"是":"否"
-        metaField.primaryKey=metaField.primaryKey==="true"?"是":"否"
-        metaField.autoIncrement=metaField.autoIncrement==="true"?"是":"否"
-        metaField.updateTime=value.updateTime
-        return metaField
-      })
-    } else if (data.code === 40100) {
-      visible.value = false
-      resultTips.icon = 'warning'
-      resultTips.title = data.message ? data.message : ""
-      resultTips.subTitle = '请先登录'
-    } else {
-      ElMessage({
-        message: data.message,
-        type: 'error'
-      })
-    }
-  })
-})
-
-const refreshPage=(value?:number)=> {
-  if(value){
-    current.value=value
+const refreshPage=async (value?:number) => {
+  if (typeof value==="number") {
+    current.value = value
   }
   let params: GenericGetRequest = {
     sortOrder: "ASC",
@@ -182,12 +142,7 @@ const importField=(field:MetaFieldId)=>{
     ElMessage.error("导入失败")
   }
 }
-
-const handleEdit = (index: number, row: FieldInfo) => {
-  console.log(index, row)
-}
 const handleDelete = (index: number, row: FieldVO) => {
-  console.log(row)
   ElMessageBox.confirm(
       `确认要删除字段:${row.name}吗?`,
       "",
@@ -214,6 +169,10 @@ const handleDelete = (index: number, row: FieldVO) => {
       ElMessage.info('取消删除')
     })
 }
+
+onMounted(() => {
+  refreshPage()
+})
 
 defineExpose({
   refreshPage

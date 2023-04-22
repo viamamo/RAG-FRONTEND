@@ -27,11 +27,7 @@
       </div>
     </div>
     <div v-else>
-      <el-result :icon="resultTips.icon" :title="resultTips.title" :sub-title="resultTips.subTitle">
-        <template #extra>
-          <el-button type="primary">Back</el-button>
-        </template>
-      </el-result>
+      <el-result :icon="resultTips.icon" :title="resultTips.title" :sub-title="resultTips.subTitle"/>
     </div>
   </div>
 </template>
@@ -59,35 +55,10 @@ let resultTips = reactive({
   title: '',
   subTitle: '',
 })
-onMounted(() => {
-  let params: GenericGetRequest = {
-    sortOrder: "ASC",
-    sortColumn: "id",
-    paginationNum: 1,
-    paginationSize: 10
-  }
-  requestTableData<DictInfo>(props.url, params).then((data) => {
-    if (data.code === 20000) {
-      visible.value = true
-      total.value = data.data.total
-      dictInfoList.value = data.data.records
-    } else if (data.code === 40100) {
-      visible.value = false
-      resultTips.icon = 'warning'
-      resultTips.title = data.message ? data.message : ""
-      resultTips.subTitle = '请先登录'
-    } else {
-      ElMessage({
-        message: data.message,
-        type: 'error'
-      })
-    }
-  })
-})
 
 const refreshPage=(value?:number)=> {
-  if(value){
-    current.value=value
+  if (typeof value==="number") {
+    current.value = value
   }
   let params: GenericGetRequest = {
     sortOrder: "ASC",
@@ -114,6 +85,10 @@ const refreshPage=(value?:number)=> {
     }
   })
 }
+
+onMounted(() => {
+  refreshPage()
+})
 
 defineExpose({
   refreshPage

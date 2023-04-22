@@ -11,8 +11,7 @@
     <div style="display: flex;justify-content: right;padding-top: 10px">
       <el-button @click="addDialogVisible.addDatabaseDialogVisible=true;">新增</el-button>
     </div>
-    <el-table :data="dbInfoList">
-      <el-table-column label="id" prop="id"/>
+    <el-table :data="dbInfoList" table-layout="auto" style="padding-top: 10px">
       <el-table-column label="名称" prop="name"/>
       <el-table-column label="主机" prop="host"/>
       <el-table-column label="端口" prop="port"/>
@@ -56,28 +55,8 @@ let dbInfoList= ref<DbInfo[]>()
 
 let addDialogVisible=useAddDialogVisibleStore()
 
-onMounted(() => {
-  let params: GenericGetRequest = {
-    sortOrder: "ASC",
-    sortColumn: "id",
-    paginationNum: 1,
-    paginationSize: 10
-  }
-  requestTableData<DbInfo>(props.url, params).then((data) => {
-    if (data.code === 20000) {
-      total.value = data.data.total
-      dbInfoList.value = data.data.records
-    } else {
-      ElMessage({
-        message: data.message,
-        type: 'error'
-      })
-    }
-  })
-})
-
 const refreshPage=async (value?: number) => {
-  if (value) {
+  if (typeof value==="number") {
     current.value = value
   }
   let params: GenericGetRequest = {
@@ -127,6 +106,10 @@ const handleDelete = (index: number, row: DbInfo) => {
       ElMessage.info('取消删除')
     })
 }
+
+onMounted(() => {
+  refreshPage()
+})
 </script>
 
 <style scoped>

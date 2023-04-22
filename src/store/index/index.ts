@@ -63,7 +63,7 @@ export const useUserInformationStore = defineStore('userInformation',{
     }
   }
 })
-
+// 不合并
 export const useGeneratedResultsStore = defineStore('generatedResults',{
   state:()=>{
     return {
@@ -76,7 +76,16 @@ export const useExecuteDialogVisibleStore = defineStore('executeDialogVisible',{
   state:()=>{
     return{
       executeSqlDialogVisible:false,
-      chooseDbDialogVisible:false
+      executeSimpleSqlDialog:false,
+      addJobDialogVisible:false
+    }
+  }
+})
+
+export const useLoadingStore = defineStore('loading',{
+  state:()=>{
+    return{
+      generateLoading:false
     }
   }
 })

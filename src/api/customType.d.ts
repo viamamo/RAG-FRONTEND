@@ -90,6 +90,7 @@ class FieldVO extends MetaFieldId {
 }
 
 class TableVO extends MetaTableId {
+  name:string;
   updateTime: Date
 }
 
@@ -116,6 +117,40 @@ class DbInfo {
   property:string;
   host:string;
   port:number;
+  userId: number;
+  createTime: Date;
+  updateTime: Date;
+}
+
+class JobInfo{
+  id:number;
+  finishedNum:number;
+  mockNum:number;
+  status:number;
+  dbName:string;
+  dbType:string;
+  host:string;
+  port:number;
+  content:string;
+  tableName:string;
+  exception?:string;
+  userId: number;
+  createTime: Date;
+  updateTime: Date;
+}
+
+class JobVO{
+  id:number;
+  finishedNum:number;
+  mockNum:number;
+  status:string;
+  dbName:string;
+  dbType:string;
+  host:string;
+  port:number;
+  tableName:string;
+  exception?:string;
+  metaFields:MetaField[];
   userId: number;
   createTime: Date;
   updateTime: Date;

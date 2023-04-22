@@ -4,6 +4,7 @@ import Dict from "../views/dict/Dict.vue";
 import Field from "../views/field/Field.vue";
 import Table from "../views/table/Table.vue";
 import DataBase from "../views/database/Database.vue";
+import Job from "../views/job/Job.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -34,6 +35,11 @@ export const routes: Array<RouteRecordRaw> = [
     path:'/database',
     name:'database',
     component:DataBase
+  },
+  {
+    path:'/job',
+    name:'job',
+    component:Job
   }
 ]
 const router = createRouter({

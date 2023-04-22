@@ -41,7 +41,8 @@ export async function requestPost(url: string, data: any):Promise<GenericRespons
     })
 }
 
-export async function requestTableData<T>(url:string,params:GenericGetRequest):Promise<GenericResponse<Page<T>>>{
+export async function requestTableData<T>(url:string,params:GenericGetRequest):Promise<GenericResponse<Page<T>>>
+{
   let paramList=Object.entries(params)
   return requestGet(url,paramList).then((data)=>{
     return data;

@@ -6,7 +6,7 @@
       </div>
     </template>
     <div v-if="empty">
-      <el-empty description="请先输入配置并点击【一键生成】"/>
+      <el-empty v-loading="loading.generateLoading" description="请先输入配置并点击【一键生成】"/>
     </div>
     <div v-else>
       <el-tabs v-model="activeTab">
@@ -49,7 +49,7 @@
           </el-collapse>
         </el-tab-pane>
         <el-tab-pane label="原始数据" name="data">
-          <el-table :data="tableData">
+          <el-table :data="tableData" table-layout="auto">
             <el-table-column v-for="(metaField,index) in generationVO.metaTable.metaFieldList" :key="index"
                              :label="metaField.fieldName" :prop="metaField.fieldName"/>
           </el-table>
@@ -59,15 +59,24 @@
                          :current-page="tablePage" :page-size="10" @current-change="pageChange"/>
         </el-tab-pane>
         <el-tab-pane label="JSON数据" name="json">
-          <div style="display: flex;justify-content: right">
-            <el-button @click.stop="copy2ClipBoard(generationVO.dataJson)">复制</el-button>
-          </div>
-          <Codemirror v-model="generationVO.dataJson"
-                      :autofocus="true"
-                      :indent-with-tab="true"
-                      :tabSize="2"
-                      :extensions="[jsonLanguage,oneDark]"
-                      style="height:auto;text-align: left;font-size: 16px;max-height:100vh;padding-top: 8px"/>
+          <el-collapse>
+            <el-collapse-item>
+              <template #title>
+                <div style="display: flex;width:100%;align-items: center;justify-content: space-between;" @change.stop>
+                  <el-text truncated>JSON数据</el-text>
+                  <div style="display:flex;padding-right:2px;">
+                    <el-button @click.stop="copy2ClipBoard(generationVO.dataJson)">复制</el-button>
+                  </div>
+                </div>
+              </template>
+              <Codemirror v-model="generationVO.dataJson"
+                          :autofocus="true"
+                          :indent-with-tab="true"
+                          :tabSize="2"
+                          :extensions="[jsonLanguage,oneDark]"
+                          style="height:auto;text-align: left;font-size: 16px;max-height:100vh;padding-top: 8px"/>
+            </el-collapse-item>
+          </el-collapse>
         </el-tab-pane>
         <el-tab-pane label="JAVA代码" name="java">
           <el-collapse>
@@ -123,7 +132,7 @@
 </template>
 
 <script setup lang="ts">
-import {useExecuteDialogVisibleStore, useGeneratedResultsStore} from "../../store/index";
+import {useExecuteDialogVisibleStore, useGeneratedResultsStore, useLoadingStore} from "../../store/index";
 import {reactive, ref} from "vue";
 import {Codemirror} from "vue-codemirror";
 import {javaLanguage} from "@codemirror/lang-java";
@@ -132,10 +141,11 @@ import {StandardSQL} from "@codemirror/lang-sql";
 import {typescriptLanguage} from "@codemirror/lang-javascript";
 import {oneDark} from "@codemirror/theme-one-dark";
 import {copy2ClipBoard} from "../../api/util/commons";
-import ChooseDbDialog from "../database/chooseDbDialog.vue";
+import ChooseDbDialog from "../database/ExecuteSimpleSqlDialog.vue";
 
 let generatedResults = useGeneratedResultsStore()
-let executeDialogVisible=useExecuteDialogVisibleStore()
+let executeDialogVisible = useExecuteDialogVisibleStore()
+let loading=useLoadingStore()
 let generationVO = ref<GenerationVO>({
   createSql: "",
   dataJson: "",
@@ -157,7 +167,7 @@ let tablePage = ref(1)
 let empty = ref(true)
 let activeTab = ref("")
 
-let executeSql=ref("")
+let executeSql = ref("")
 
 generatedResults.$subscribe((mutation, state) => {
   generationVO.value = {
@@ -180,9 +190,9 @@ function pageChange(pageNumber: number) {
   tableData = generationVO.value.dataList.slice((pageNumber - 1) * 10, pageNumber * 10)
 }
 
-function executeSqlSimple(sql:string){
-  executeSql.value=sql
-  executeDialogVisible.chooseDbDialogVisible=true;
+function executeSqlSimple(sql: string) {
+  executeSql.value = sql
+  executeDialogVisible.executeSimpleSqlDialog = true;
 }
 </script>
 

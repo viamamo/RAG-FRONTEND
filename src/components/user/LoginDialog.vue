@@ -92,7 +92,6 @@ function submitDialog(formEl: FormInstance | undefined) {
     if (valid) {
       if (login.value) {
         requestPost('/user_info/login', dialogStatus).then((data) => {
-          console.log(data)
           if (data.code !== 20000) {
             ElMessage.error("登陆失败：" + data.message)
           } else {

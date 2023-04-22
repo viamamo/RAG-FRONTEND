@@ -21,11 +21,11 @@
             </el-input>
           </el-form-item>
           <el-form-item label="字段类型" prop="fieldType" :rules="rules.fieldType">
-            <el-select v-model="metaField.fieldType">
+            <el-select v-model="metaField.fieldType" filterable>
               <el-option v-for="[key,value] in Object.entries(FIELD_TYPES)" :label="key" :value="value"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="默认值" prop="defaultValue">
+          <el-form-item label="默认值" prop="defaultValue" :required="metaField.mockType=='NONE'">
             <el-input v-model="metaField.defaultValue">
             </el-input>
           </el-form-item>

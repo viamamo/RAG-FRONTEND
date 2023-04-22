@@ -69,7 +69,12 @@ let menuItems: RouterItem[] = [
   },
   {
     path: 'database',
-    name: '数据库/作业',
+    name: '数据库',
+    children: []
+  },
+  {
+    path: 'job',
+    name: '作业',
     children: []
   }
 ]

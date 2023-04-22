@@ -10,7 +10,7 @@
             <el-space direction="vertical" alignment="stretch">
               <el-descriptions :title="scope.row.name" :column="2" border>
                 <template #title>
-                  <el-text size="large">{{ scope.row.tableName }}</el-text>
+                  <el-text size="large">{{ scope.row.name }}</el-text>
                 </template>
                 <el-descriptions-item label="表名：">
                   {{ scope.row.tableName }}
@@ -43,17 +43,13 @@
       </div>
     </div>
     <div v-else>
-      <el-result :icon="resultTips.icon" :title="resultTips.title" :sub-title="resultTips.subTitle">
-        <template #extra>
-          <el-button type="primary">Back</el-button>
-        </template>
-      </el-result>
+      <el-result :icon="resultTips.icon" :title="resultTips.title" :sub-title="resultTips.subTitle"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {onActivated, reactive, ref} from "vue";
 import {dateStringFormat, MetaTable2MetaTableId, requestPost, requestTableData} from "../../api/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useMetaTableStore} from "../../store/index";
@@ -77,39 +73,13 @@ let resultTips = reactive({
   subTitle: '',
 })
 
-onMounted(() => {
-  let params: GenericGetRequest = {
-    sortOrder: "ASC",
-    sortColumn: "id",
-    paginationNum: 1,
-    paginationSize: 10
-  }
-  requestTableData<TableInfo>(props.url, params).then((data) => {
-    if (data.code === 20000) {
-      total.value = data.data.total
-      tableInfoList.value=data.data.records.map((value: TableInfo) => {
-        let metaTable=JSON.parse(value.content) as TableVO
-        metaTable.id=value.id.toString()
-        metaTable.updateTime=value.updateTime
-        return metaTable
-      })
-    } else if (data.code === 40100) {
-      visible.value = false
-      resultTips.icon = 'warning'
-      resultTips.title = data.message?data.message:""
-      resultTips.subTitle = '请先登录'
-    } else {
-      ElMessage({
-        message: data.message,
-        type: 'error'
-      })
-    }
-  })
+onActivated(() => {
+  refreshPage()
 })
 
-const refreshPage=(value?:number)=> {
-  if(value){
-    current.value=value
+const refreshPage=async (value?: number) => {
+  if (typeof value==="number") {
+    current.value = value
   }
   let params: GenericGetRequest = {
     sortOrder: "ASC",
@@ -122,7 +92,9 @@ const refreshPage=(value?:number)=> {
     if (data.code === 20000) {
       total.value = data.data.total
       tableInfoList.value=data.data.records.map((value: TableInfo) => {
-        return JSON.parse(value.content) as TableVO
+        let tableVO:TableVO=JSON.parse(value.content) as TableVO
+        tableVO.name=value.name
+        return tableVO
       })
     } else {
       ElMessage({
@@ -144,7 +116,6 @@ const importTable=(metaTable:MetaTable)=>{
 }
 
 const handleDelete = (index: number, row: TableInfo) => {
-  console.log(row)
   ElMessageBox.confirm(
       `确认要删除表:${row.name}吗?`,
       "",

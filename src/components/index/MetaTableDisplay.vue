@@ -62,6 +62,7 @@ const validTable=async ()=>{
 
 defineExpose({
   validTable
+
 })
 </script>
 
