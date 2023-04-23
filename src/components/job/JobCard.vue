@@ -8,7 +8,7 @@
     <div>
       <el-input v-model="search" placeholder="Enter to search" @keydown.enter="refreshPage"/>
     </div>
-    <el-table :data="jobVOList" table-layout="auto" style="padding-top: 10px">
+    <el-table :data="jobVOList" table-layout="auto" style="padding-top: 10px" @row-click="openInfoDialog">
       <el-table-column label="id" prop="id"/>
       <el-table-column label="主机" prop="host"/>
       <el-table-column label="端口" prop="port"/>
@@ -20,7 +20,7 @@
       <el-table-column label="状态" prop="status"/>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button v-if="scope.row.status=='未开始'||scope.row.status=='已撤销'"
+          <el-button v-if="scope.row.status=='未开始'||scope.row.status=='已完成'||scope.row.status=='已撤销'"
                      @click="executeJob(scope.$index,scope.row)">
             开始
           </el-button>
@@ -38,6 +38,7 @@
                      :current-page="current" :page-size="10" @current-change="refreshPage"/>
     </div>
   </el-card>
+  <JobInfoDialog ref="jobInfoDialogRef"/>
 </template>
 
 <script setup lang="ts">
@@ -45,6 +46,7 @@ import {onActivated, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {requestPost, requestTableData} from "../../api/util/commons";
 import {getJobStatus} from "../../api/job/function";
+import JobInfoDialog from "./JobInfoDialog.vue";
 
 const props = defineProps<{
   url: string,
@@ -54,6 +56,9 @@ const search = ref('')
 let current = ref(1)
 let total = ref(0)
 let jobVOList = ref<JobVO[]>()
+let jobInfoNow=ref()
+let jobInfoDialogRef=ref()
+let dialogMetaField=ref()
 
 const refreshPage = async (value?: number) => {
   if (typeof value === "number") {
@@ -70,7 +75,7 @@ const refreshPage = async (value?: number) => {
     if (data.code === 20000) {
       total.value = data.data.total
       jobVOList.value = data.data.records.map((value: JobInfo) => {
-        let metaFields = JSON.parse(value.content) as MetaField[]
+        let metaTable = JSON.parse(value.content) as MetaTable
         let jobVO: JobVO = {
           id: value.id,
           finishedNum: value.finishedNum,
@@ -80,7 +85,7 @@ const refreshPage = async (value?: number) => {
           dbType: value.dbType,
           host: value.host,
           port: value.port,
-          metaFields: metaFields,
+          metaFields: metaTable.metaFieldList,
           tableName: value.tableName,
           exception: value.exception,
           userId: value.userId,
@@ -159,7 +164,7 @@ function executeJob(index: number, row: JobVO) {
       cancelButtonText: '取消',
       type: 'warning',
     }
-  ).then(()=>{
+  ).then(() => {
     jobVOList.value![index].status = '执行中'
     requestPost('/job_info/execute', {
       id: row.id
@@ -168,9 +173,9 @@ function executeJob(index: number, row: JobVO) {
         ElMessage.error(data.message)
       }
       ElMessage.success("开始执行")
-      setTimeout(()=>{
+      setTimeout(() => {
         refreshPage()
-      },1000)
+      }, 1000)
     })
   }).catch(() => {
     ElMessage.info('取消执行')
@@ -186,7 +191,7 @@ function rollbackJob(index: number, row: JobVO) {
       cancelButtonText: '取消',
       type: 'warning',
     }
-  ).then(()=>{
+  ).then(() => {
     jobVOList.value![index].status = '执行中'
     requestPost('/job_info/rollback', {
       id: row.id
@@ -197,9 +202,14 @@ function rollbackJob(index: number, row: JobVO) {
       ElMessage.success("撤销成功")
       refreshPage()
     })
-  }).catch(()=>{
+  }).catch(() => {
     ElMessage.info('取消撤销')
   })
+}
+
+function openInfoDialog(row: JobVO) {
+  jobInfoDialogRef.value.jobInfo=row
+  jobInfoDialogRef.value.dialogVisible=true
 }
 
 onActivated(() => {

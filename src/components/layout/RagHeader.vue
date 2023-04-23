@@ -1,8 +1,9 @@
 <template>
   <el-row class="dark" align="middle">
     <el-col :span="2">
-      <div class="logo">
-        Logo
+      <div style="display: flex;align-items: center;text-align: center">
+        <el-image :src="logo" style="width: 30px"/>
+        <el-text size="small" truncated>&nbsp;&nbsp;RAG's A Generator</el-text>
       </div>
     </el-col>
     <el-col :span="20">
@@ -42,6 +43,7 @@ import {Icon} from "@iconify/vue";
 import userCircle from '@iconify-icons/ph/user-circle';
 import {requestPost} from "../../api/util/commons";
 import {ElMessage} from "element-plus";
+import logo from "../../assets/logo.png"
 
 let userDialogVisible=useUserDialogVisibleStore()
 let userInformation=useUserInformationStore()
@@ -110,10 +112,6 @@ function logout(){
 
 <style scoped>
 
-.logo {
-  text-align: center;
-  vertical-align: middle;
-}
 
 ::v-deep(.el-menu--horizontal) {
   border-bottom: none;
