@@ -21,7 +21,7 @@
 
 import DataBaseCard from "./DatabaseCard.vue";
 import {useExecuteDialogVisibleStore} from "../../store/index";
-import {requestPost} from "../../api/util/commons";
+import {requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
 import {ref} from "vue";
 

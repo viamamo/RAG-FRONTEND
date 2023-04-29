@@ -19,7 +19,7 @@
                   {{ scope.row.tableComment }}
                 </el-descriptions-item>
                 <el-descriptions-item label="字段列表：">
-                  {{ scope.row.metaFieldList.map(metaField=>metaField.fieldName).join(',') }}
+                  {{ scope.row.metaFieldListString }}
                 </el-descriptions-item>
               </el-descriptions>
               <el-space spacer="|">
@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import {onActivated, reactive, ref} from "vue";
-import {dateStringFormat, MetaTable2MetaTableId, requestPost, requestTableData} from "../../api/util/commons";
+import {dateStringFormat, MetaTable2MetaTableId, requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useMetaTableStore} from "../../store/index";
 
@@ -73,10 +73,6 @@ let resultTips = reactive({
   subTitle: '',
 })
 
-onActivated(() => {
-  refreshPage()
-})
-
 const refreshPage=async (value?: number) => {
   if (typeof value==="number") {
     current.value = value
@@ -94,8 +90,16 @@ const refreshPage=async (value?: number) => {
       tableInfoList.value=data.data.records.map((value: TableInfo) => {
         let tableVO:TableVO=JSON.parse(value.content) as TableVO
         tableVO.name=value.name
+        tableVO.metaFieldListString=tableVO.metaFieldList.map((metaField)=>{
+          return metaField.fieldName
+        }).join(',')
         return tableVO
       })
+    } else if (data.code === 40100) {
+      visible.value = false
+      resultTips.icon = 'warning'
+      resultTips.title = data.message ? data.message : ""
+      resultTips.subTitle = '请先登录'
     } else {
       ElMessage({
         message: data.message,
@@ -143,6 +147,10 @@ const handleDelete = (index: number, row: TableInfo) => {
       ElMessage.info('取消删除')
     })
 }
+
+onActivated(() => {
+  refreshPage()
+})
 
 defineExpose({
   refreshPage

@@ -52,7 +52,7 @@ export const useAddDialogVisibleStore = defineStore('addDialogVisible',{
 export const useUserInformationStore = defineStore('userInformation',{
   state:()=>{
     return {
-      logged:false,
+      isLogin:false,
       id:-1,
       userName:"",
       userAccount:"",

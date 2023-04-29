@@ -49,6 +49,9 @@
           </el-collapse>
         </el-tab-pane>
         <el-tab-pane label="原始数据" name="data">
+          <div style="display:flex;right: 0;padding-right:2px;">
+            <el-button @click.stop="downloadExcel">下载数据(Excel)</el-button>
+          </div>
           <el-table :data="tableData" table-layout="auto">
             <el-table-column v-for="(metaField,index) in generationVO.metaTable.metaFieldList" :key="index"
                              :label="metaField.fieldName" :prop="metaField.fieldName"/>
@@ -140,7 +143,7 @@ import {jsonLanguage} from "@codemirror/lang-json";
 import {StandardSQL} from "@codemirror/lang-sql";
 import {typescriptLanguage} from "@codemirror/lang-javascript";
 import {oneDark} from "@codemirror/theme-one-dark";
-import {copy2ClipBoard} from "../../api/util/commons";
+import {copy2ClipBoard, requestPostBlob} from "../../function/util/commons";
 import ChooseDbDialog from "../database/ExecuteSimpleSqlDialog.vue";
 
 let generatedResults = useGeneratedResultsStore()
@@ -193,6 +196,20 @@ function pageChange(pageNumber: number) {
 function executeSqlSimple(sql: string) {
   executeSql.value = sql
   executeDialogVisible.executeSimpleSqlDialog = true;
+}
+
+function downloadExcel(){
+  console.log(generationVO)
+  requestPostBlob('/sql/download/data/excel',generationVO.value)
+    .then((data)=>{
+      const blob = new Blob([data]);
+      const objectURL = URL.createObjectURL(blob);
+      const btn = document.createElement('a');
+      btn.download = `${generationVO.value.metaTable.tableName}-表数据.xlsx`;
+      btn.href = objectURL;
+      btn.click();
+      URL.revokeObjectURL(objectURL);
+    })
 }
 </script>
 

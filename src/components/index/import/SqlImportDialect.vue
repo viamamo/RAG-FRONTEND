@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import {useImportDialogVisibleStore, useMetaTableStore} from "../../../store/index";
 import {ref} from "vue";
-import {MetaTable2MetaTableId, requestPost} from "../../../api/util/commons";
+import {MetaTable2MetaTableId, requestPost} from "../../../function/util/commons";
 import {ElMessage} from "element-plus";
 
 const importDialogVisible=useImportDialogVisibleStore()

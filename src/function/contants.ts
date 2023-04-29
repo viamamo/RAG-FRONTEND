@@ -33,7 +33,7 @@ export const MOCK_TYPES = {
   FIXED: "固定",
   RANDOM: "随机",
   REGEX: "正则",
-  DICT: "词库"
+  DICT: "词库",
 }
 export const MOCK_LABEL = {
   INCREASE: "起始值",

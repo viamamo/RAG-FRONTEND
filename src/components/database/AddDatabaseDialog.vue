@@ -6,29 +6,29 @@
       </h2>
     </template>
     <el-form v-model="inputContent" label-width="auto">
-      <el-form-item prop="name" label="系统名:">
+      <el-form-item prop="name" label="名称:" required>
         <el-input v-model="inputContent.name"/>
       </el-form-item>
-      <el-form-item prop="dbName" label="数据库名:">
+      <el-form-item prop="dbName" label="数据库名:" required>
         <el-input v-model="inputContent.dbName"/>
       </el-form-item>
-      <el-form-item prop="dbType" label="数据库类型:">
+      <el-form-item prop="dbType" label="数据库类型:" required>
         <el-select v-model="inputContent.dbType" @change="defaultAttr">
           <el-option v-for="databaseType in DATABASE_TYPES" :label="databaseType.name" :value="databaseType.value"/>
         </el-select>
       </el-form-item>
       <div style="display: flex">
-        <el-form-item prop="host" label="主机:">
+        <el-form-item prop="host" label="主机:" required>
           <el-input v-model="inputContent.host"/>
         </el-form-item>
-        <el-form-item prop="port" label="端口号:">
+        <el-form-item prop="port" label="端口号:" required>
           <el-input v-model="inputContent.port"/>
         </el-form-item>
       </div>
-      <el-form-item prop="username" label="用户名:">
+      <el-form-item prop="username" label="用户名:" required>
         <el-input v-model="inputContent.username"/>
       </el-form-item>
-      <el-form-item prop="password" label="密码:">
+      <el-form-item prop="password" label="密码:" required>
         <el-input v-model="inputContent.password"/>
       </el-form-item>
     </el-form>
@@ -47,9 +47,9 @@
 
 import {useAddDialogVisibleStore} from "../../store/index";
 import {reactive} from "vue";
-import {requestPost} from "../../api/util/commons";
+import {requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
-import {DATABASE_TYPES} from "../../api/contants";
+import {DATABASE_TYPES} from "../../function/contants";
 
 const emits = defineEmits<{
   (e: 'refresh'): void

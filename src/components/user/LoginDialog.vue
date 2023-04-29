@@ -29,9 +29,9 @@
 <script setup lang="ts">
 import {useUserDialogVisibleStore, useUserInformationStore} from "../../store/index";
 import {reactive, ref} from "vue";
-import {requestPost} from "../../api/util/commons";
+import {requestPost} from "../../function/util/commons";
 import {ElMessage, FormInstance} from "element-plus";
-import {DEFAULT_USER_ROLE} from "../../api/contants";
+import {DEFAULT_USER_ROLE} from "../../function/contants";
 
 let login = ref(true)
 
@@ -96,7 +96,7 @@ function submitDialog(formEl: FormInstance | undefined) {
             ElMessage.error("登陆失败：" + data.message)
           } else {
             let userInfo = data.data as UserInfo
-            userInformation.logged=true
+            userInformation.isLogin=true
             userInformation.id = userInfo.id
             userInformation.userName = userInfo.userName
             userInformation.userAccount = userInfo.userAccount
@@ -112,7 +112,7 @@ function submitDialog(formEl: FormInstance | undefined) {
           if (data.code !== 20000) {
             ElMessage.error("注册失败：" + data.message)
           } else {
-            userInformation.logged=true
+            userInformation.isLogin=true
             userInformation.id = data.data as number
             userInformation.userName = dialogStatus.userName
             userInformation.userAccount = dialogStatus.userAccount

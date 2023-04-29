@@ -41,6 +41,21 @@ export async function requestPost(url: string, data: any):Promise<GenericRespons
     })
 }
 
+export async function requestPostBlob(url: string, data: any):Promise<Blob> {
+  return fetch(import.meta.env.VITE_API_BASE_URL + url, {
+    method: 'Post',
+    credentials: 'include',
+    body: JSON.stringify(data),
+    headers: {
+      'content-type': 'application/json'
+    },
+  })
+    .then(data => {
+      return data.blob();
+    })
+}
+
+
 export async function requestTableData<T>(url:string,params:GenericGetRequest):Promise<GenericResponse<Page<T>>>
 {
   let paramList=Object.entries(params)

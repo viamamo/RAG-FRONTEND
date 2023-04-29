@@ -5,7 +5,7 @@
         <div class="card-header">
           <el-text size="large">个人词库</el-text>
         </div>
-        <el-button v-if="userInformation.logged" class="card-header-right" @click="addDialogVisible.addDictDialogVisible=true;">
+        <el-button v-if="userInformation.isLogin" class="card-header-right" @click="addDialogVisible.addDictDialogVisible=true;">
           创建词库
         </el-button>
       </div>

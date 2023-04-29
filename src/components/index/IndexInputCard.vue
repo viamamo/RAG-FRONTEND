@@ -13,10 +13,10 @@
       <el-button :disabled="metaTableId.mockNum>config.MAX_GENERATE_NUM" size="large" @click="generate">
         一键生成
       </el-button>
-      <el-button size="large" @click="saveJob">
+      <el-button :disabled="!userInformation.isLogin" size="large" @click="saveJob">
         配置作业
       </el-button>
-      <el-button size="large" @click="saveTable">
+      <el-button :disabled="!userInformation.isLogin" size="large" @click="saveTable">
         保存为表
       </el-button>
       <el-button size="large" @click="exportTable">
@@ -48,17 +48,19 @@ import {
   useExecuteDialogVisibleStore,
   useGeneratedResultsStore,
   useLoadingStore,
-  useMetaTableStore
+  useMetaTableStore,
+  useUserInformationStore
 } from "../../store/index";
 import FieldImportDrawer from "./FieldImportDrawer.vue";
 import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {MetaFieldId2MetaField, MetaTableId2MetaTable, requestPost} from "../../api/util/commons";
+import {MetaFieldId2MetaField, MetaTableId2MetaTable, requestPost} from "../../function/util/commons";
 import {useClipboard} from "@vueuse/core";
 import * as config from "../../config.json"
 import AddJobDialog from "../job/AddJobDialog.vue";
 
 let metaTableId: MetaTableId = useMetaTableStore().metaTableId
+let userInformation=useUserInformationStore()
 let executeDialogVisible = useExecuteDialogVisibleStore()
 let generatedResults = useGeneratedResultsStore()
 let loading = useLoadingStore()

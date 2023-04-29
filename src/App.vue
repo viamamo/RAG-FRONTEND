@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Layout from "./views/layout/RagLayout.vue";
 import {onMounted} from "vue";
-import {requestGet} from "./api/util/commons";
+import {requestGet} from "./function/util/commons";
 import {useUserInformationStore} from "./store/index";
 
 onMounted(()=>{
@@ -9,7 +9,7 @@ onMounted(()=>{
     if(data.code===20000){
       let userInfo:UserInfo=data.data as UserInfo
       let userInformation=useUserInformationStore()
-      userInformation.logged=true
+      userInformation.isLogin=true
       userInformation.id = userInfo.id
       userInformation.userName = userInfo.userName
       userInformation.userAccount = userInfo.userAccount

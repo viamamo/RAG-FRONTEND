@@ -91,6 +91,7 @@ class FieldVO extends MetaFieldId {
 
 class TableVO extends MetaTableId {
   name:string;
+  metaFieldListString:string
   updateTime: Date
 }
 

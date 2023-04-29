@@ -5,7 +5,7 @@
         <div style="display: flex;width:100%;align-items: center;justify-content: space-between;" @change.stop>
           <el-text truncated>{{ metaField.fieldName }}</el-text>
           <div style="display:flex;padding-right:2px;">
-            <el-button @click.stop="saveField(metaField,formRef[index])">
+            <el-button :disabled="!userInformation.isLogin" @click.stop="saveField(metaField,index)">
               保存
             </el-button>
             <el-button @click.stop="deleteField(metaField.id)">
@@ -25,7 +25,7 @@
               <el-option v-for="[key,value] in Object.entries(FIELD_TYPES)" :label="key" :value="value"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="默认值" prop="defaultValue" :required="metaField.mockType=='NONE'">
+          <el-form-item label="默认值" prop="defaultValue" :required="metaField.notNull&&!metaField.primaryKey">
             <el-input v-model="metaField.defaultValue">
             </el-input>
           </el-form-item>
@@ -70,16 +70,17 @@
 </template>
 
 <script setup lang="ts">
-import {useMetaTableStore} from "../../store/index";
-import {getMockLabel} from "../../api/field/function";
-import {FIELD_TYPES, MOCK_TYPES, RANDOM_TYPES} from "../../api/contants";
+import {useMetaTableStore, useUserInformationStore} from "../../store/index";
+import {getMockLabel} from "../../function/field/function";
+import {FIELD_TYPES, MOCK_TYPES, RANDOM_TYPES} from "../../function/contants";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {reactive, ref} from "vue";
-import {MetaFieldId2MetaField, requestPost} from "../../api/util/commons";
+import {MetaFieldId2MetaField, requestPost} from "../../function/util/commons";
 
 let metaTableId = useMetaTableStore().metaTableId
+let userInformation=useUserInformationStore()
 
-const formRef = ref<FormInstance>()
+const formRef = ref<FormInstance[]>()
 
 const rules = reactive({
   fieldName: [
@@ -96,9 +97,9 @@ const rules = reactive({
   ],
 })
 
-async function saveField(metaFieldId: MetaFieldId, formRef: FormInstance) {
-  if (!formRef) return
-  await formRef.validate((valid) => {
+async function saveField(metaFieldId: MetaFieldId,index:number) {
+  if (!formRef.value) return
+  await formRef.value[index].validate((valid) => {
     if (valid) {
       ElMessageBox.prompt('请输入元字段名', '保存元字段', {
           confirmButtonText: '确认',

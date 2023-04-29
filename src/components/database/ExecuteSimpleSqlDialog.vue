@@ -27,7 +27,7 @@
 <script setup lang="ts">
 
 import {useExecuteDialogVisibleStore} from "../../store/index";
-import {requestGet, requestPost} from "../../api/util/commons";
+import {requestGet, requestPost} from "../../function/util/commons";
 import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 

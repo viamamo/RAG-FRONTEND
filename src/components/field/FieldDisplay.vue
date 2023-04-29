@@ -25,9 +25,9 @@
                   {{ scope.row.defaultValue }}
                 </el-descriptions-item>
                 <el-descriptions-item label="模拟类型：">
-                  {{ MOCK_TYPES[scope.row.mockType] }}
+                  {{ getMockType(scope.row.mockType) }}
                 </el-descriptions-item>
-                <el-descriptions-item :label="MOCK_LABEL[scope.row.mockType]">
+                <el-descriptions-item :label="getMockLabel(scope.row.mockType)">
                   {{ scope.row.mockParams }}
                 </el-descriptions-item>
                 <el-descriptions-item label="非空：">
@@ -68,11 +68,11 @@
 
 <script setup lang="ts">
 import {onMounted, reactive, ref} from "vue";
-import {dateStringFormat, requestPost, requestTableData} from "../../api/util/commons";
+import {dateStringFormat, requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {MOCK_LABEL, MOCK_TYPES} from "../../api/contants";
 import {useMetaTableStore} from "../../store/index";
 import {nanoid} from "nanoid";
+import {getMockLabel, getMockType} from "../../function/field/function";
 
 const props = defineProps<{
   url: string,

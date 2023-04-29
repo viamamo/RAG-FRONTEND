@@ -9,7 +9,7 @@
       <el-input v-model="search" placeholder="Enter to search" @keydown.enter="refreshPage"/>
     </div>
     <div style="display: flex;justify-content: right;padding-top: 10px">
-      <el-button @click="addDialogVisible.addDatabaseDialogVisible=true;">新增</el-button>
+      <el-button v-if="userInformation.isLogin" @click="addDialogVisible.addDatabaseDialogVisible=true;">新增</el-button>
     </div>
     <el-table :data="dbInfoList" table-layout="auto" style="padding-top: 10px">
       <el-table-column label="名称" prop="name"/>
@@ -18,7 +18,7 @@
       <el-table-column label="数据库名" prop="dbName"/>
       <el-table-column label="数据库类型" prop="dbType"/>
       <el-table-column label="连接参数" prop="property"/>
-      <el-table-column label="操作">
+      <el-table-column v-if="userInformation.isLogin" label="操作">
         <template #default="scope">
           <el-button @click="handleDelete(scope.$index, scope.row)">
             删除
@@ -36,10 +36,10 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {requestPost, requestTableData} from "../../api/util/commons";
+import {requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 import AddDatabaseDialog from "./AddDatabaseDialog.vue";
-import {useAddDialogVisibleStore} from "../../store/index";
+import {useAddDialogVisibleStore, useUserInformationStore} from "../../store/index";
 
 const props = defineProps<{
   url: string,
@@ -53,6 +53,7 @@ let current = ref(1)
 let total = ref(0)
 let dbInfoList= ref<DbInfo[]>()
 
+let userInformation=useUserInformationStore()
 let addDialogVisible=useAddDialogVisibleStore()
 
 const refreshPage=async (value?: number) => {

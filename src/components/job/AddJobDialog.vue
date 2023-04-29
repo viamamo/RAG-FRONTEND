@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import {useExecuteDialogVisibleStore, useMetaTableStore} from "../../store/index";
 import {onMounted, ref} from "vue";
-import {MetaTableId2MetaTable, requestGet, requestPost} from "../../api/util/commons";
+import {MetaTableId2MetaTable, requestGet, requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
 
 let metaTableId: MetaTableId = useMetaTableStore().metaTableId

@@ -18,13 +18,13 @@
       <el-table-column label="已完成条数" prop="finishedNum"/>
       <el-table-column label="模拟条数" prop="mockNum"/>
       <el-table-column label="状态" prop="status"/>
-      <el-table-column label="操作">
+      <el-table-column v-if="userInformation.isLogin" label="操作">
         <template #default="scope">
           <el-button v-if="scope.row.status=='未开始'||scope.row.status=='已完成'||scope.row.status=='已撤销'"
                      @click="executeJob(scope.$index,scope.row)">
             开始
           </el-button>
-          <el-button v-else-if="scope.row.status=='已完成'" @click="rollbackJob(scope.$index, scope.row)">
+          <el-button v-if="scope.row.status=='已完成'" @click="rollbackJob(scope.$index, scope.row)">
             撤销
           </el-button>
           <el-button :disabled="scope.row.status=='执行中'" @click="handleDelete(scope.$index, scope.row)">
@@ -44,9 +44,10 @@
 <script setup lang="ts">
 import {onActivated, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {requestPost, requestTableData} from "../../api/util/commons";
-import {getJobStatus} from "../../api/job/function";
+import {requestPost, requestTableData} from "../../function/util/commons";
+import {getJobStatus} from "../../function/job/function";
 import JobInfoDialog from "./JobInfoDialog.vue";
+import {useUserInformationStore} from "../../store/index";
 
 const props = defineProps<{
   url: string,
@@ -56,9 +57,9 @@ const search = ref('')
 let current = ref(1)
 let total = ref(0)
 let jobVOList = ref<JobVO[]>()
-let jobInfoNow=ref()
 let jobInfoDialogRef=ref()
-let dialogMetaField=ref()
+
+let userInformation=useUserInformationStore()
 
 const refreshPage = async (value?: number) => {
   if (typeof value === "number") {

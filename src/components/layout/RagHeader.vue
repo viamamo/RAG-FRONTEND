@@ -41,7 +41,7 @@ import {useUserDialogVisibleStore, useUserInformationStore} from "../../store/in
 import LoginDialog from "../user/LoginDialog.vue";
 import {Icon} from "@iconify/vue";
 import userCircle from '@iconify-icons/ph/user-circle';
-import {requestPost} from "../../api/util/commons";
+import {requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
 import logo from "../../assets/logo.png"
 
@@ -95,7 +95,7 @@ function logout(){
       ElMessage.error("注销失败："+data.message)
     }
     else {
-      userInformation.logged=false
+      userInformation.isLogin=false
       userInformation.id = -1
       userInformation.userName = ""
       userInformation.userAccount = ""

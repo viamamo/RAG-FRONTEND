@@ -74,10 +74,10 @@
 <script setup lang="ts">
 import {useAddDialogVisibleStore} from "../../store/index";
 import {reactive} from "vue";
-import {requestPost} from "../../api/util/commons";
+import {requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
-import {getMockLabel} from "../../api/field/function";
-import {FIELD_TYPES, MOCK_TYPES, RANDOM_TYPES} from "../../api/contants";
+import {getMockLabel} from "../../function/field/function";
+import {FIELD_TYPES, MOCK_TYPES, RANDOM_TYPES} from "../../function/contants";
 
 const emits=defineEmits<{
   (e:'refresh'):void

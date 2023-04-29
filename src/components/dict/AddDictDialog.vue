@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import {useAddDialogVisibleStore} from "../../store/index";
 import {reactive} from "vue";
-import {requestPost} from "../../api/util/commons";
+import {requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
 
 const emits=defineEmits<{
