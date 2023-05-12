@@ -8,6 +8,7 @@ export const useMetaTableStore=defineStore('metaTableId',{
       metaTableId:{
         id:nanoid(),
         dbName: "",
+        dbType: "",
         tableName: "",
         tableComment: "",
         mockNum: 0,
@@ -42,8 +43,6 @@ export const useAddDialogVisibleStore = defineStore('addDialogVisible',{
   state:()=>{
     return {
       addDictDialogVisible:false,
-      addFieldDialogVisible:false,
-      addTableDialogVisible:false,
       addDatabaseDialogVisible:false
     }
   }
@@ -86,6 +85,49 @@ export const useLoadingStore = defineStore('loading',{
   state:()=>{
     return{
       generateLoading:false
+    }
+  }
+})
+
+export const useDictStore = defineStore('dict',{
+  state:()=>{
+    return {
+      dictInfoList: [] as DictInfo[],
+    }
+  }
+})
+
+export const useBasicInfoStore=defineStore('basicInfo',{
+  state:()=>{
+    return {
+      DATABASE_TYPES:[] as DatabaseType[],
+      FAKER_TYPES:[] as FakerType[],
+      FIELD_TYPES:[] as FieldType[],
+      MOCK_TYPES:[] as MockType[],
+    }
+  },
+  actions:{
+    getDatabaseType(key:string):DatabaseType|undefined{
+      let databaseType=this.DATABASE_TYPES.find((value)=>{
+        if(value.key===key){
+          return value
+        }
+      })
+      if(databaseType==undefined){
+        return undefined
+      }
+      return {key: databaseType.key, name: databaseType.name ,defaultPort:databaseType.defaultPort}
+    },
+    getMockType(key:string):MockType|undefined{
+      let mockType=this.MOCK_TYPES.find((value)=>{
+        if(value.key===key){
+          return value
+        }
+      })
+      if(mockType==undefined){
+        return undefined
+      }
+      return {key: mockType.key, mockParamName: mockType.mockParamName, value: mockType.value}
     }
   }
 })

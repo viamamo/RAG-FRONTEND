@@ -8,14 +8,12 @@
       </div>
     </template>
     <FieldDisplay @refresh="refresh" ref="fieldDisplay" url="/field_info/my/list/page" :configurable="true"/>
-    <AddFieldDialog @refresh="refresh"/>
   </el-card>
 </template>
 
 <script setup lang="ts">
 import FieldDisplay from "./FieldDisplay.vue";
 import {useUserInformationStore} from "../../store/index";
-import AddFieldDialog from "./AddFieldDialog.vue";
 import {ref, watch} from "vue";
 
 const emits=defineEmits<{

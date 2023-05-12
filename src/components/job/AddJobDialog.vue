@@ -7,7 +7,7 @@
     title="选择数据库"
   >
     <el-form>
-      <el-form-item label="数据库：">
+      <el-form-item label="数据库：" required>
         <el-select v-model="inputContent.dbInfoId" filterable>
           <el-option v-for="dbInfo in dbInfoList" :label="dbInfo.name" :value="dbInfo.id"/>
         </el-select>
@@ -54,7 +54,7 @@ onMounted(()=>{
 
 function addJob(){
   executeDialogVisible.addJobDialogVisible=false
-  requestPost('/job_info/add',{
+  requestPost('/job/add',{
     dbInfoId:inputContent.value.dbInfoId,
     content:JSON.stringify(MetaTableId2MetaTable(metaTableId))
   }).then((data)=>{

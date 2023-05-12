@@ -22,7 +22,7 @@
           </el-form-item>
           <el-form-item label="字段类型" prop="fieldType" :rules="rules.fieldType">
             <el-select v-model="metaField.fieldType" filterable>
-              <el-option v-for="[key,value] in Object.entries(FIELD_TYPES)" :label="key" :value="value"/>
+              <el-option v-for="field in useBasicInfoStore().FIELD_TYPES" :label="field.key" :value="field.value"/>
             </el-select>
           </el-form-item>
           <el-form-item label="默认值" prop="defaultValue" :required="metaField.notNull&&!metaField.primaryKey">
@@ -35,23 +35,23 @@
           </el-form-item>
           <el-form-item label="模拟类型" prop="mockType" :rules="rules.mockType">
             <el-select v-model="metaField.mockType">
-              <el-option v-for="[key,value] in Object.entries(MOCK_TYPES)" :label="value" :value="key"/>
+              <el-option v-for="mock in useBasicInfoStore().MOCK_TYPES" :label="mock.value" :value="mock.key"/>
             </el-select>
           </el-form-item>
           <el-form-item
             v-if="metaField.mockType==='INCREASE'||metaField.mockType==='FIXED'||metaField.mockType==='REGEX'"
-            :label="getMockLabel(metaField.mockType)" prop="mockParams" :rules="rules.mockParams">
+            :label="useBasicInfoStore().getMockType(metaField.mockType)?.mockParamName" prop="mockParams" :rules="rules.mockParams">
             <el-input v-model="metaField.mockParams">
             </el-input>
           </el-form-item>
           <el-form-item
             v-else-if="metaField.mockType==='RANDOM'||metaField.mockType==='DICT'"
-            :label="getMockLabel(metaField.mockType)" prop="mockParams" :rules="rules.mockParams">
+            :label="useBasicInfoStore().getMockType(metaField.mockType)?.mockParamName" prop="mockParams" :rules="rules.mockParams">
             <el-select v-show="metaField.mockType==='RANDOM'" v-model="metaField.mockParams">
-              <el-option v-for="[key,value] in Object.entries(RANDOM_TYPES)" :label="value" :value="key"/>
+              <el-option v-for="faker in useBasicInfoStore().FAKER_TYPES" :label="faker.value" :value="faker.key"/>
             </el-select>
             <el-select v-show="metaField.mockType==='DICT'" v-model="metaField.mockParams">
-              <el-option v-for="[key,value] in Object.entries(RANDOM_TYPES)" :label="value" :value="key"/>
+              <el-option v-for="dict in dictList" :label="dict.name" :value="dict.id"/>
             </el-select>
           </el-form-item>
           <el-form-item label="非空" prop="notNull">
@@ -70,15 +70,19 @@
 </template>
 
 <script setup lang="ts">
-import {useMetaTableStore, useUserInformationStore} from "../../store/index";
-import {getMockLabel} from "../../function/field/function";
-import {FIELD_TYPES, MOCK_TYPES, RANDOM_TYPES} from "../../function/contants";
+import {useBasicInfoStore, useDictStore, useMetaTableStore, useUserInformationStore} from "../../store/index";
 import {ElMessage, ElMessageBox, FormInstance} from "element-plus";
 import {reactive, ref} from "vue";
 import {MetaFieldId2MetaField, requestPost} from "../../function/util/commons";
 
 let metaTableId = useMetaTableStore().metaTableId
 let userInformation=useUserInformationStore()
+let dictList=ref()
+
+useDictStore().$subscribe((mutation, state) => {
+  dictList.value = state.dictInfoList
+})
+
 
 const formRef = ref<FormInstance[]>()
 
@@ -97,15 +101,15 @@ const rules = reactive({
   ],
 })
 
-async function saveField(metaFieldId: MetaFieldId,index:number) {
+function saveField(metaFieldId: MetaFieldId,index:number) {
   if (!formRef.value) return
-  await formRef.value[index].validate((valid) => {
+  formRef.value[index].validate((valid) => {
     if (valid) {
-      ElMessageBox.prompt('请输入元字段名', '保存元字段', {
+      ElMessageBox.prompt('请输入字段定义名', '保存字段定义', {
           confirmButtonText: '确认',
           cancelButtonText: '取消',
           inputPattern: /.{1,30}/,
-          inputErrorMessage: '无效的元字段名',
+          inputErrorMessage: '无效的字段定义名',
           inputPlaceholder: '长度为1~30个字符',
         })
         .then(({value}) => {
@@ -122,7 +126,7 @@ async function saveField(metaFieldId: MetaFieldId,index:number) {
           })
         })
     } else {
-      ElMessage.error("字段属性错误")
+      ElMessage.error("字段定义属性错误")
     }
   })
 }

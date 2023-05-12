@@ -11,7 +11,7 @@
         <el-text>
           请输入建表SQL：
         </el-text>
-        <el-button @click="importExample">
+        <el-button v-if="false" @click="importExample">
           导入示例
         </el-button>
       </div>

@@ -75,6 +75,7 @@ async function saveTable() {
         try {
           content = {
             dbName: metaTableId.dbName,
+            dbType: metaTableId.dbType,
             tableName: metaTableId.tableName,
             tableComment: metaTableId.tableComment,
             mockNum: metaTableId.mockNum,
@@ -91,14 +92,15 @@ async function saveTable() {
         } catch (e: any) {
           ElMessage.error(e.toString())
         }
-        ElMessageBox.prompt('请输入元表名', '保存元表', {
+        ElMessageBox.prompt('请输入表定义名', '保存表定义', {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             inputPattern: /.{1,30}/,
-            inputErrorMessage: '无效的元表名',
+            inputErrorMessage: '无效的表定义名',
             inputPlaceholder: '长度为1~30个字符',
           })
           .then(({value}) => {
+            console.log(content)
             requestPost('/table_info/add', {
               name: value,
               content: JSON.stringify(content)
@@ -139,6 +141,7 @@ function generate() {
         try {
           content = {
             dbName: metaTableId.dbName,
+            dbType: metaTableId.dbType,
             tableName: metaTableId.tableName,
             tableComment: metaTableId.tableComment,
             mockNum: metaTableId.mockNum,
@@ -158,10 +161,10 @@ function generate() {
               ElMessage.error(`生成失败：${data.message}`)
             } else {
               generatedResults.$patch({generationVO: data.data as GenerationVO})
-              loading.generateLoading = false
               ElMessage.success(`生成成功`)
             }
           })
+          loading.generateLoading = false
         } catch (e: any) {
           ElMessage.error(e.toString())
         }

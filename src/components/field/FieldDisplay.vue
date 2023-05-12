@@ -25,9 +25,9 @@
                   {{ scope.row.defaultValue }}
                 </el-descriptions-item>
                 <el-descriptions-item label="模拟类型：">
-                  {{ getMockType(scope.row.mockType) }}
+                  {{ useBasicInfoStore().getMockType(scope.row.mockType)?.value }}
                 </el-descriptions-item>
-                <el-descriptions-item :label="getMockLabel(scope.row.mockType)">
+                <el-descriptions-item :label="useBasicInfoStore().getMockType(scope.row.mockType)?.mockParamName">
                   {{ scope.row.mockParams }}
                 </el-descriptions-item>
                 <el-descriptions-item label="非空：">
@@ -70,9 +70,8 @@
 import {onMounted, reactive, ref} from "vue";
 import {dateStringFormat, requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {useMetaTableStore} from "../../store/index";
+import {useBasicInfoStore, useMetaTableStore} from "../../store/index";
 import {nanoid} from "nanoid";
-import {getMockLabel, getMockType} from "../../function/field/function";
 
 const props = defineProps<{
   url: string,
@@ -81,7 +80,6 @@ const props = defineProps<{
 const emits=defineEmits<{
   (e:'refresh'):void
 }>()
-
 const metaTableId=useMetaTableStore().metaTableId
 
 const search = ref('')

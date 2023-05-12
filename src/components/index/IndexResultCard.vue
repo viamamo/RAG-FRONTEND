@@ -10,7 +10,7 @@
     </div>
     <div v-else>
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="SQL" name="sql">
+        <el-tab-pane v-loading="loading.generateLoading" label="SQL" name="sql">
           <el-collapse>
             <el-collapse-item>
               <template #title>
@@ -48,11 +48,11 @@
             </el-collapse-item>
           </el-collapse>
         </el-tab-pane>
-        <el-tab-pane label="原始数据" name="data">
-          <div style="display:flex;right: 0;padding-right:2px;">
+        <el-tab-pane v-loading="loading.generateLoading" label="原始数据" name="data">
+          <div style="display:flex;right: 0;padding-right:2px;padding-bottom: 10px">
             <el-button @click.stop="downloadExcel">下载数据(Excel)</el-button>
           </div>
-          <el-table :data="tableData" table-layout="auto">
+          <el-table :data="tableData" table-layout="auto" header-cell-class-name="table_cell">
             <el-table-column v-for="(metaField,index) in generationVO.metaTable.metaFieldList" :key="index"
                              :label="metaField.fieldName" :prop="metaField.fieldName"/>
           </el-table>
@@ -61,7 +61,7 @@
                          :total="generationVO.dataList.length"
                          :current-page="tablePage" :page-size="10" @current-change="pageChange"/>
         </el-tab-pane>
-        <el-tab-pane label="JSON数据" name="json">
+        <el-tab-pane v-loading="loading.generateLoading" label="JSON数据" name="json">
           <el-collapse>
             <el-collapse-item>
               <template #title>
@@ -81,7 +81,7 @@
             </el-collapse-item>
           </el-collapse>
         </el-tab-pane>
-        <el-tab-pane label="JAVA代码" name="java">
+        <el-tab-pane v-loading="loading.generateLoading" label="JAVA代码" name="java">
           <el-collapse>
             <el-collapse-item>
               <template #title>
@@ -117,8 +117,8 @@
             </el-collapse-item>
           </el-collapse>
         </el-tab-pane>
-        <el-tab-pane label="TypeScript代码" name="ts">
-          <div style="display: flex;justify-content: right">
+        <el-tab-pane v-loading="loading.generateLoading" label="TypeScript代码" name="ts">
+          <div style="display: flex;justify-content: right;padding-bottom: 10px">
             <el-button @click.stop="copy2ClipBoard(generationVO.typescriptTypeCode)">复制</el-button>
           </div>
           <Codemirror v-model="generationVO.typescriptTypeCode"
@@ -158,6 +158,7 @@ let generationVO = ref<GenerationVO>({
   javaObjectCode: "",
   metaTable: {
     dbName: "",
+    dbType: "",
     tableName: "",
     tableComment: "",
     mockNum: -1,
@@ -213,7 +214,11 @@ function downloadExcel(){
 }
 </script>
 
-<style scoped>
+<style>
+.table_cell .cell{
+  white-space: nowrap;
+}
+
 .card-header {
   display: flex;
   justify-content: left;

@@ -77,6 +77,7 @@ export function MetaTable2MetaTableId(metaTable:MetaTable):MetaTableId{
   return {
     id: nanoid(),
     dbName: metaTable.dbName,
+    dbType: metaTable.dbType,
     tableName: metaTable.tableName,
     tableComment: metaTable.tableComment,
     mockNum: metaTable.mockNum,
@@ -89,6 +90,7 @@ export function MetaTable2MetaTableId(metaTable:MetaTable):MetaTableId{
 export function MetaTableId2MetaTable(metaTableId:MetaTableId):MetaTable{
   return {
     dbName: metaTableId.dbName,
+    dbType: metaTableId.dbType,
     tableName: metaTableId.tableName,
     tableComment: metaTableId.tableComment,
     mockNum: metaTableId.mockNum,

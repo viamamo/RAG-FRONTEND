@@ -8,7 +8,7 @@
     </el-col>
     <el-col :span="20">
       <el-menu mode="horizontal" :router="true" :default-active="activeMenuItem">
-        <el-menu-item v-for="menuItem in menuItems" :key="menuItem.path" :index="menuItem.path">
+        <el-menu-item v-for="menuItem in MENU_ITEMS" :key="menuItem.path" :index="menuItem.path">
           {{ menuItem.name }}
         </el-menu-item>
       </el-menu>
@@ -44,43 +44,12 @@ import userCircle from '@iconify-icons/ph/user-circle';
 import {requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
 import logo from "../../assets/logo.png"
+import {MENU_ITEMS} from "../../function/contants"
 
 let userDialogVisible=useUserDialogVisibleStore()
 let userInformation=useUserInformationStore()
 
-let menuItems: RouterItem[] = [
-  {
-    path: 'index',
-    name: '主页',
-    children: []
-  },
-  {
-    path: 'dict',
-    name: '词典',
-    children: []
-  },
-  {
-    path: 'field',
-    name: '字段',
-    children: []
-  },
-  {
-    path: 'table',
-    name: '表',
-    children: []
-  },
-  {
-    path: 'database',
-    name: '数据库',
-    children: []
-  },
-  {
-    path: 'job',
-    name: '作业',
-    children: []
-  }
-]
-let activeMenuItem = ref("index");
+let activeMenuItem = ref(window.location.hash.replace('#', ''));
 
 let darkMode = useDark();
 watch(darkMode, (value) => {

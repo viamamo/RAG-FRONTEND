@@ -9,37 +9,55 @@ import Job from "../views/job/Job.vue";
 export const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/index'
+    redirect: '/index',
   },
   {
     path: '/index',
     name:'index',
-    component:Index
+    component:Index,
+    meta:{
+      active:"/index"
+    }
   },
   {
     path:'/dict',
     name:'dict',
-    component:Dict
+    component:Dict,
+    meta:{
+      active:"/dict"
+    }
   },
   {
     path:'/field',
     name:'field',
-    component:Field
+    component:Field,
+    meta:{
+      active:"/field"
+    }
   },
   {
     path:'/table',
     name:'table',
-    component:Table
+    component:Table,
+    meta:{
+      active:"/table"
+    }
   },
   {
     path:'/database',
     name:'database',
-    component:DataBase
+    component:DataBase,
+    meta:{
+      active:"/database"
+    }
   },
   {
     path:'/job',
     name:'job',
-    component:Job
+    component:Job,
+    meta:{
+      active:"/job"
+    }
   }
 ]
 const router = createRouter({

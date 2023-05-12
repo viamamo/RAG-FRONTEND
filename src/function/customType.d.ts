@@ -12,6 +12,7 @@ class MetaField {
 
 class MetaTable {
   dbName: string;
+  dbType: string;
   tableName: string;
   tableComment: string;
   mockNum: number;
@@ -25,6 +26,7 @@ class MetaFieldId extends MetaField {
 class MetaTableId {
   id: string;
   dbName: string;
+  dbType: string;
   tableName: string;
   tableComment: string;
   mockNum: number;
@@ -155,4 +157,26 @@ class JobVO{
   userId: number;
   createTime: Date;
   updateTime: Date;
+}
+
+class DatabaseType{
+  key:string;
+  name:string;
+  defaultPort:number;
+}
+
+class FakerType{
+  key:string;
+  value:string;
+}
+
+class FieldType{
+  key:string;
+  value:string;
+}
+
+class MockType{
+  key:string;
+  value:string;
+  mockParamName:string;
 }

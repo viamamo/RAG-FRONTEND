@@ -5,7 +5,7 @@
         创建词库
       </h2>
     </template>
-    <el-form v-model="inputContent">
+    <el-form :model="inputContent">
       <el-form-item prop="name" label="词库名：">
         <el-input v-model="inputContent.name"/>
       </el-form-item>

@@ -21,13 +21,13 @@
       <el-table-column v-if="userInformation.isLogin" label="操作">
         <template #default="scope">
           <el-button v-if="scope.row.status=='未开始'||scope.row.status=='已完成'||scope.row.status=='已撤销'"
-                     @click="executeJob(scope.$index,scope.row)">
+                     @click.stop="executeJob(scope.$index,scope.row)">
             开始
           </el-button>
-          <el-button v-if="scope.row.status=='已完成'" @click="rollbackJob(scope.$index, scope.row)">
+          <el-button v-if="scope.row.status=='已完成'" @click.stop="rollbackJob(scope.$index, scope.row)">
             撤销
           </el-button>
-          <el-button :disabled="scope.row.status=='执行中'" @click="handleDelete(scope.$index, scope.row)">
+          <el-button :disabled="scope.row.status=='执行中'" @click.stop="handleDelete(scope.$index, scope.row)">
             删除
           </el-button>
         </template>
@@ -125,7 +125,7 @@ const handleDelete = (index: number, row: JobVO) => {
             type: 'warning',
           }
         ).then(() => {
-          requestPost('/job_info/delete', {
+          requestPost('/job/delete', {
             id: row.id
           }).then((data) => {
             if (data.code !== 20000) {
@@ -139,7 +139,7 @@ const handleDelete = (index: number, row: JobVO) => {
           throw e
         })
       } else {
-        requestPost('/job_info/delete', {
+        requestPost('/job/delete', {
           id: row.id
         }).then((data) => {
           if (data.code !== 20000) {
@@ -167,7 +167,7 @@ function executeJob(index: number, row: JobVO) {
     }
   ).then(() => {
     jobVOList.value![index].status = '执行中'
-    requestPost('/job_info/execute', {
+    requestPost('/job/execute', {
       id: row.id
     }).then((data) => {
       if (data.code != 20000) {
@@ -194,7 +194,7 @@ function rollbackJob(index: number, row: JobVO) {
     }
   ).then(() => {
     jobVOList.value![index].status = '执行中'
-    requestPost('/job_info/rollback', {
+    requestPost('/job/rollback', {
       id: row.id
     }).then((data) => {
       if (data.code != 20000) {

@@ -1,7 +1,7 @@
 <template>
   <el-row justify="space-around">
     <el-col :span="22">
-      <JobCard url="/job_info/list/page"/>
+      <JobCard url="/job/list/page"/>
     </el-col>
   </el-row>
 </template>

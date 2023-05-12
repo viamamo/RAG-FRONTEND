@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import {onActivated, reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {dateStringFormat, MetaTable2MetaTableId, requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useMetaTableStore} from "../../store/index";
@@ -86,10 +86,13 @@ const refreshPage=async (value?: number) => {
   }
   requestTableData<TableInfo>(props.url, params).then((data) => {
     if (data.code === 20000) {
+      visible.value=true
       total.value = data.data.total
       tableInfoList.value=data.data.records.map((value: TableInfo) => {
         let tableVO:TableVO=JSON.parse(value.content) as TableVO
+        tableVO.id=value.id.toString()
         tableVO.name=value.name
+        tableVO.updateTime=value.updateTime
         tableVO.metaFieldListString=tableVO.metaFieldList.map((metaField)=>{
           return metaField.fieldName
         }).join(',')
@@ -120,6 +123,7 @@ const importTable=(metaTable:MetaTable)=>{
 }
 
 const handleDelete = (index: number, row: TableInfo) => {
+  console.log(row);
   ElMessageBox.confirm(
       `确认要删除表:${row.name}吗?`,
       "",
@@ -148,7 +152,7 @@ const handleDelete = (index: number, row: TableInfo) => {
     })
 }
 
-onActivated(() => {
+onMounted(() => {
   refreshPage()
 })
 

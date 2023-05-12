@@ -6,8 +6,8 @@
     draggable
     title="选择数据库"
   >
-    <el-form>
-      <el-form-item label="数据库：">
+    <el-form :model="inputContent" ref="formRef">
+      <el-form-item label="数据库：" prop="dbInfoId" :rules="rules.dbInfoId">
         <el-select v-model="inputContent.dbInfoId" filterable>
           <el-option v-for="dbInfo in dbInfoList" :label="dbInfo.name" :value="dbInfo.id"/>
         </el-select>
@@ -28,8 +28,8 @@
 
 import {useExecuteDialogVisibleStore} from "../../store/index";
 import {requestGet, requestPost} from "../../function/util/commons";
-import {onMounted, ref} from "vue";
-import {ElMessage} from "element-plus";
+import {onMounted, reactive, ref} from "vue";
+import {ElMessage, FormInstance} from "element-plus";
 
 const props=defineProps<{
   sql:string
@@ -42,6 +42,14 @@ let dbInfoList=ref<DbInfo[]>([])
 let inputContent=ref({
   dbInfoId:undefined,
 })
+
+let rules=reactive({
+  dbInfoId: [
+    {required: true, message: '数据库不得为空', trigger: 'blur'},
+  ],
+})
+
+const formRef=ref<FormInstance>()
 
 onMounted(()=>{
   requestGet('/db_info/list',[]).then((data) => {
@@ -57,16 +65,19 @@ onMounted(()=>{
 })
 
 function simpleExecuteSql(){
-  executeDialogVisible.executeSqlDialogVisible=false
-  requestPost('/job_info/execute/simple',{
-    dbInfoId:inputContent.value.dbInfoId,
-    sql:props.sql,
-  }).then((data)=>{
-    if(data.code!==20000){
-      ElMessage.error(`执行错误：${data.message}`)
-    }
-    else {
-      ElMessage.success("执行成功")
+  formRef.value?.validate((valid) => {
+    if (valid) {
+      executeDialogVisible.executeSqlDialogVisible = false
+      requestPost('/job/execute/simple', {
+        dbInfoId: inputContent.value.dbInfoId,
+        sql: props.sql,
+      }).then((data) => {
+        if (data.code !== 20000) {
+          ElMessage.error(`执行错误：${data.message}`)
+        } else {
+          ElMessage.success("执行成功")
+        }
+      })
     }
   })
 }

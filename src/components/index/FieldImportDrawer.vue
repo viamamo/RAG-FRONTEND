@@ -2,14 +2,14 @@
   <el-drawer
     v-model="importDialogVisible.fieldImportDrawerVisible"
     direction="rtl">
-    <MyField style="height: 90%;"/>
+    <PublicField style="height: 90%;"/>
   </el-drawer>
 </template>
 
 <script setup lang="ts">
 
-import MyField from "../field/MyField.vue";
 import {useImportDialogVisibleStore} from "../../store/index";
+import PublicField from "../field/PublicField.vue";
 
 const importDialogVisible=useImportDialogVisibleStore()
 
