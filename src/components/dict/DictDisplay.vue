@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {onActivated, reactive, ref} from "vue";
 import {requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 
@@ -86,7 +86,7 @@ const refreshPage=(value?:number)=> {
   })
 }
 
-onMounted(() => {
+onActivated(()=>{
   refreshPage()
 })
 

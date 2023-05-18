@@ -65,7 +65,7 @@ export async function requestTableData<T>(url:string,params:GenericGetRequest):P
 }
 
 export function dateFormat(date:Date):string{
-  return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`
+  return `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`
 }
 
 export function dateStringFormat(dateString:string):string{
@@ -139,8 +139,28 @@ export function copy2ClipBoard(value:string):void{
     })
     return;
   }
-  copy(value).then((data)=>{
-    console.log(data)
-  });
-  ElMessage.success("已复制到剪切板")
+  if(window.isSecureContext) {
+    copy(value);
+    ElMessage.success("已复制到剪切板")
+  }
+  else {
+    let textArea = document.createElement("textarea");
+    textArea.value = value;
+    // 使text area不在viewport，同时设置不可见
+    textArea.style.position = "absolute";
+    textArea.style.opacity = "0";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand('copy') ?
+      ElMessage.success("已复制到剪切板") :
+      ElMessage.info({
+        message: `您的浏览器不支持Clipboard API，请手动复制：\n${value}`,
+        showClose: true,
+        duration: 0
+      }) ;
+    textArea.remove();
+  }
 }

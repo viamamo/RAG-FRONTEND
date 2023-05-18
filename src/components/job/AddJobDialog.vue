@@ -39,10 +39,10 @@ let inputContent=ref({
   dbInfoId:undefined,
 })
 
-onMounted(()=>{
+function refresh(){
   requestGet('/db_info/list',[]).then((data) => {
     if (data.code === 20000) {
-      dbInfoList=data.data
+      dbInfoList.value=data.data
     } else {
       ElMessage({
         message: data.message,
@@ -50,6 +50,10 @@ onMounted(()=>{
       })
     }
   })
+}
+
+onMounted(()=>{
+  refresh()
 })
 
 function addJob(){
@@ -66,6 +70,10 @@ function addJob(){
     }
   })
 }
+
+defineExpose({
+  refresh
+})
 </script>
 
 <style scoped>

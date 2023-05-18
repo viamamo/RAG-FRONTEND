@@ -117,7 +117,10 @@ class DbInfo {
   url:string;
   username:string;
   password:string;
-  property:string;
+  property:{
+    key:string,
+    value:string
+  }[];
   host:string;
   port:number;
   userId: number;

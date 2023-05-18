@@ -74,7 +74,6 @@ export const useGeneratedResultsStore = defineStore('generatedResults',{
 export const useExecuteDialogVisibleStore = defineStore('executeDialogVisible',{
   state:()=>{
     return{
-      executeSqlDialogVisible:false,
       executeSimpleSqlDialog:false,
       addJobDialogVisible:false
     }

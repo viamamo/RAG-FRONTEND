@@ -17,7 +17,13 @@
       <el-table-column label="端口" prop="port"/>
       <el-table-column label="数据库名" prop="dbName"/>
       <el-table-column label="数据库类型" prop="dbType"/>
-      <el-table-column label="连接参数" prop="property"/>
+      <el-table-column label="连接参数" prop="property">
+        <template #default="scope">
+          <el-space v-if="scope.row.property" direction="vertical" style="max-height: 100px">
+            <el-text v-for="[key,value] in Object.entries(JSON.parse(scope.row.property))">{{key}}:{{value}}</el-text>
+          </el-space>
+        </template>
+      </el-table-column>
       <el-table-column v-if="userInformation.isLogin" label="操作">
         <template #default="scope">
           <el-button @click="handleDelete(scope.$index, scope.row)">
@@ -35,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onActivated, ref} from "vue";
 import {requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 import AddDatabaseDialog from "./AddDatabaseDialog.vue";
@@ -108,7 +114,8 @@ const handleDelete = (index: number, row: DbInfo) => {
     })
 }
 
-onMounted(() => {
+
+onActivated(()=>{
   refreshPage()
 })
 </script>

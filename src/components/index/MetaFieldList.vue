@@ -77,7 +77,7 @@ import {MetaFieldId2MetaField, requestPost} from "../../function/util/commons";
 
 let metaTableId = useMetaTableStore().metaTableId
 let userInformation=useUserInformationStore()
-let dictList=ref()
+let dictList=ref(useDictStore().dictInfoList)
 
 useDictStore().$subscribe((mutation, state) => {
   dictList.value = state.dictInfoList
@@ -86,6 +86,7 @@ useDictStore().$subscribe((mutation, state) => {
 
 const formRef = ref<FormInstance[]>()
 
+// TODO 规则
 const rules = reactive({
   fieldName: [
     {required: true, message: '字段名不得为空', trigger: 'blur'},

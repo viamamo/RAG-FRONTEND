@@ -33,7 +33,7 @@
   <SqlImportDialect/>
   <ExcelImportDialog/>
   <FieldImportDrawer/>
-  <AddJobDialog/>
+  <AddJobDialog ref="addJobDialog"/>
 </template>
 
 <script setup lang="ts">
@@ -51,11 +51,10 @@ import {
   useMetaTableStore,
   useUserInformationStore
 } from "../../store/index";
-import FieldImportDrawer from "./FieldImportDrawer.vue";
+import FieldImportDrawer from "./import/FieldImportDrawer.vue";
 import {ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {MetaFieldId2MetaField, MetaTableId2MetaTable, requestPost} from "../../function/util/commons";
-import {useClipboard} from "@vueuse/core";
+import {copy2ClipBoard, MetaFieldId2MetaField, MetaTableId2MetaTable, requestPost} from "../../function/util/commons";
 import * as config from "../../config.json"
 import AddJobDialog from "../job/AddJobDialog.vue";
 
@@ -66,6 +65,7 @@ let generatedResults = useGeneratedResultsStore()
 let loading = useLoadingStore()
 let metaTableDisplay = ref()
 let metaFieldDisplay = ref()
+let addJobDialog=ref()
 
 async function saveTable() {
   metaTableDisplay.value.validTable().then((data: any) => {
@@ -81,10 +81,10 @@ async function saveTable() {
             mockNum: metaTableId.mockNum,
             metaFieldList: metaTableId.metaFieldList.map((value) => {
               if (!value.fieldName || !value.fieldType || !value.mockType || value.fieldName == "" || value.fieldType == "" || value.mockType == "") {
-                throw "字段属性错误"
+                throw `字段${value.fieldName}属性错误`
               }
               if (value.mockType != "NONE" && (!value.mockParams || value.mockParams == "")) {
-                throw "字段属性错误"
+                throw `字段${value.fieldName}属性错误`
               }
               return MetaFieldId2MetaField(value)
             })
@@ -120,17 +120,7 @@ async function saveTable() {
 }
 
 function exportTable() {
-  const {copy, isSupported} = useClipboard();
-  if (!isSupported) {
-    ElMessage.info({
-      message: `您的浏览器不支持Clipboard API，请手动复制：\n${JSON.stringify(MetaTableId2MetaTable(metaTableId))}`,
-      showClose: true,
-      duration: 0
-    })
-    return;
-  }
-  copy(JSON.stringify(MetaTableId2MetaTable(metaTableId)));
-  ElMessage.success("已复制到剪切板")
+  copy2ClipBoard(JSON.stringify(MetaTableId2MetaTable(metaTableId)))
 }
 
 function generate() {
@@ -147,10 +137,10 @@ function generate() {
             mockNum: metaTableId.mockNum,
             metaFieldList: metaTableId.metaFieldList.map((value) => {
               if (!value.fieldName || !value.fieldType || !value.mockType || value.fieldName == "" || value.fieldType == "" || value.mockType == "") {
-                throw "字段属性错误"
+                throw `字段${value.fieldName}属性错误`
               }
               if (value.mockType != "NONE" && (!value.mockParams || value.mockParams == "")) {
-                throw "字段属性错误"
+                throw `字段${value.fieldName}属性错误`
               }
               return MetaFieldId2MetaField(value)
             })
@@ -183,15 +173,16 @@ function saveJob() {
           try {
             metaTableId.metaFieldList.forEach((value) => {
               if (!value.fieldName || !value.fieldType || !value.mockType || value.fieldName == "" || value.fieldType == "" || value.mockType == "") {
-                throw "字段属性错误"
+                throw `字段${value.fieldName}属性错误`
               }
               if (value.mockType != "NONE" && (!value.mockParams || value.mockParams == "")) {
-                throw "字段属性错误"
+                throw `字段${value.fieldName}属性错误`
               }
             })
           } catch (e: any) {
             ElMessage.error(e.toString())
           }
+          addJobDialog.value.refresh()
           executeDialogVisible.addJobDialogVisible = true
         }
         else{

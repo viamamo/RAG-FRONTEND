@@ -31,13 +31,13 @@
                   {{ scope.row.mockParams }}
                 </el-descriptions-item>
                 <el-descriptions-item label="非空：">
-                  {{ scope.row.notNull }}
+                  {{ scope.row.notNull==="true"?"是":"否" }}
                 </el-descriptions-item>
                 <el-descriptions-item label="主键：">
-                  {{ scope.row.primaryKey }}
+                  {{ scope.row.primaryKey==="true"?"是":"否" }}
                 </el-descriptions-item>
                 <el-descriptions-item label="自增：">
-                  {{ scope.row.autoIncrement }}
+                  {{ scope.row.autoIncrement==="true"?"是":"否" }}
                 </el-descriptions-item>
               </el-descriptions>
               <el-space spacer="|">
@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {onActivated, reactive, ref} from "vue";
 import {dateStringFormat, requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useBasicInfoStore, useMetaTableStore} from "../../store/index";
@@ -111,9 +111,6 @@ const refreshPage=async (value?:number) => {
         let metaField=JSON.parse(value.content) as FieldVO
         metaField.id=value.id.toString()
         metaField.name=value.name
-        metaField.notNull=metaField.notNull==="true"?"是":"否"
-        metaField.primaryKey=metaField.primaryKey==="true"?"是":"否"
-        metaField.autoIncrement=metaField.autoIncrement==="true"?"是":"否"
         metaField.updateTime=value.updateTime
         return metaField
       })
@@ -168,7 +165,7 @@ const handleDelete = (index: number, row: FieldVO) => {
     })
 }
 
-onMounted(() => {
+onActivated(()=>{
   refreshPage()
 })
 

@@ -64,10 +64,16 @@ onMounted(()=>{
   })
 })
 
+function clearDialog() {
+  executeDialogVisible.executeSimpleSqlDialog = false
+  inputContent.value.dbInfoId = undefined
+}
+
+
 function simpleExecuteSql(){
   formRef.value?.validate((valid) => {
     if (valid) {
-      executeDialogVisible.executeSqlDialogVisible = false
+      executeDialogVisible.executeSimpleSqlDialog = false
       requestPost('/job/execute/simple', {
         dbInfoId: inputContent.value.dbInfoId,
         sql: props.sql,
@@ -79,6 +85,7 @@ function simpleExecuteSql(){
         }
       })
     }
+    clearDialog()
   })
 }
 </script>

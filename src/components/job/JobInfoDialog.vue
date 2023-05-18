@@ -28,14 +28,14 @@
       <el-table-column label="字段类型" prop="fieldType"/>
       <el-table-column type="expand">
         <template #default="prop">
-          <el-descriptions>
+          <el-descriptions style="padding-left: 5px;padding-right: 5px" border>
             <el-descriptions-item label="默认值">{{ prop.row.defaultValue }}</el-descriptions-item>
             <el-descriptions-item label="注释">{{ prop.row.comment }}</el-descriptions-item>
             <el-descriptions-item label="模拟类型">{{ prop.row.mockType }}</el-descriptions-item>
             <el-descriptions-item label="模拟参数">{{ prop.row.mockParams }}</el-descriptions-item>
-            <el-descriptions-item label="主键">{{ prop.row.primaryKey }}</el-descriptions-item>
-            <el-descriptions-item label="自增">{{ prop.row.autoIncrement }}</el-descriptions-item>
-            <el-descriptions-item label="非空">{{ prop.row.notNull }}</el-descriptions-item>
+            <el-descriptions-item label="主键">{{ prop.row.primaryKey==="true"?"是":"否" }}</el-descriptions-item>
+            <el-descriptions-item label="自增">{{ prop.row.autoIncrement==="true"?"是":"否" }}</el-descriptions-item>
+            <el-descriptions-item label="非空">{{ prop.row.notNull==="true"?"是":"否" }}</el-descriptions-item>
           </el-descriptions>
         </template>
       </el-table-column>

@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {onActivated, reactive, ref} from "vue";
 import {dateStringFormat, MetaTable2MetaTableId, requestPost, requestTableData} from "../../function/util/commons";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useMetaTableStore} from "../../store/index";
@@ -98,6 +98,7 @@ const refreshPage=async (value?: number) => {
         }).join(',')
         return tableVO
       })
+      console.log(tableInfoList)
     } else if (data.code === 40100) {
       visible.value = false
       resultTips.icon = 'warning'
@@ -152,7 +153,7 @@ const handleDelete = (index: number, row: TableInfo) => {
     })
 }
 
-onMounted(() => {
+onActivated(()=>{
   refreshPage()
 })
 

@@ -63,7 +63,7 @@ let genericMetaFieldList=[
   {
     id:nanoid(),
     fieldName: "create_time",
-    fieldType: "datetime",
+    fieldType: "timestamp",
     defaultValue: "CURRENT_TIMESTAMP",
     notNull: true,
     comment: "创建时间",
@@ -75,7 +75,7 @@ let genericMetaFieldList=[
   {
     id:nanoid(),
     fieldName: "update_time",
-    fieldType: "datetime",
+    fieldType: "timestamp",
     defaultValue: "CURRENT_TIMESTAMP",
     notNull: true,
     comment: "更新时间",
@@ -87,14 +87,14 @@ let genericMetaFieldList=[
   {
     id:nanoid(),
     fieldName: "is_deleted",
-    fieldType: "tinyint",
-    defaultValue: "0",
+    fieldType: "boolean",
+    defaultValue: "false",
     notNull: false,
     comment: "删除标记",
     primaryKey: false,
     autoIncrement: false,
     mockType: "FIXED",
-    mockParams: "0",
+    mockParams: "false",
   }
 ]
 </script>

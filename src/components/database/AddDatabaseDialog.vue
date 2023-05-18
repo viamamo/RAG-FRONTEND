@@ -26,7 +26,14 @@
         </el-form-item>
       </div>
       <el-form-item prop="username" label="连接参数:">
-        <el-input v-model="inputContent.property"/>
+        <el-space direction="vertical" alignment="flex-start">
+          <el-space v-for="(item,index) in inputContent.property" :key="nanoid()">
+            <el-input v-model="item.key"/>
+            <el-input v-model="item.value"/>
+            <el-button @click="inputContent.property.splice(index,1)">删除</el-button>
+          </el-space>
+          <el-button @click="inputContent.property.push({key: '',value: ''})">添加</el-button>
+        </el-space>
       </el-form-item>
       <el-form-item prop="username" label="用户名:" :rules="rules.username">
         <el-input v-model="inputContent.username"/>
@@ -52,6 +59,7 @@ import {useAddDialogVisibleStore, useBasicInfoStore} from "../../store/index";
 import {reactive} from "vue";
 import {requestPost} from "../../function/util/commons";
 import {ElMessage} from "element-plus";
+import {nanoid} from "nanoid";
 
 const emits = defineEmits<{
   (e: 'refresh'): void
@@ -65,7 +73,7 @@ let inputContent = reactive({
   dbType: "",
   username: "",
   password: "",
-  property:"",
+  property: [] as {key:string,value:string}[],
   host: "",
   port: "",
 })
@@ -98,7 +106,7 @@ function clearDialog() {
   inputContent.dbType = ""
   inputContent.username = ""
   inputContent.password = ""
-  inputContent.property = ""
+  inputContent.property = []
   inputContent.host = ""
 }
 

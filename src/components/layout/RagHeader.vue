@@ -50,6 +50,9 @@ let userDialogVisible=useUserDialogVisibleStore()
 let userInformation=useUserInformationStore()
 
 let activeMenuItem = ref(window.location.hash.replace('#', ''));
+if(activeMenuItem.value=="/") {
+  activeMenuItem.value = "/index"
+}
 
 let darkMode = useDark();
 watch(darkMode, (value) => {

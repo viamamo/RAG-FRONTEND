@@ -8,7 +8,7 @@ export const MENU_ITEMS: RouterItem[] = [
   },
   {
     path: '/dict',
-    name: '词典',
+    name: '词库',
     children: []
   },
   {
